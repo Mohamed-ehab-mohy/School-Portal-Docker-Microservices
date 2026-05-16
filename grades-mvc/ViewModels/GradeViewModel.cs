@@ -1,0 +1,16 @@
+namespace grades_mvc.ViewModels;
+
+public class GradeViewModel
+{
+    public int Id { get; set; }
+
+    public int StudentId { get; set; }
+
+    public string StudentName { get; set; } = string.Empty;
+
+    public string Subject { get; set; } = string.Empty;
+
+    public decimal Score { get; set; }
+
+    public bool IsStudentServiceUnavailable { get; set; }
+}

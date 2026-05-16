@@ -1,15 +1,24 @@
+using grades_mvc.Data;
+using grades_mvc.Services;
 using Microsoft.EntityFrameworkCore;
-using students_mvc.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<GradesDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlServerOptions => sqlServerOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
             errorNumbersToAdd: null)));
+
+builder.Services.AddHttpClient<StudentsServiceClient>(client =>
+{
+    var baseUrl = builder.Configuration["StudentsService:BaseUrl"]
+        ?? throw new InvalidOperationException("StudentsService:BaseUrl is not configured.");
+
+    client.BaseAddress = new Uri(baseUrl);
+});
 
 builder.Services.AddControllersWithViews();
 

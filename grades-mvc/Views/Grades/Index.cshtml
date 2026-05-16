@@ -1,0 +1,44 @@
+@model IEnumerable<grades_mvc.ViewModels.GradeViewModel>
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<h1>Grades</h1>
+
+@if (ViewData["WarningMessage"] is string warningMessage)
+{
+    <div class="alert alert-warning" role="alert">@warningMessage</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Student ID</th>
+            <th>Subject</th>
+            <th>Score</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.StudentName</td>
+            <td>@item.StudentId</td>
+            <td>@item.Subject</td>
+            <td>@item.Score</td>
+            <td class="text-nowrap">
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
