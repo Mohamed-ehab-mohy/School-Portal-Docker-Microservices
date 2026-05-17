@@ -29,7 +29,16 @@
 @foreach (var item in Model)
 {
         <tr>
-            <td>@item.StudentName</td>
+            <td>
+                @if (item.IsStudentServiceUnavailable)
+                {
+                    <span>@item.StudentId</span>
+                }
+                else
+                {
+                    @item.StudentName
+                }
+            </td>
             <td>@item.StudentId</td>
             <td>@item.Subject</td>
             <td>@item.Score</td>

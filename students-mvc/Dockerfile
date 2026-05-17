@@ -10,8 +10,8 @@ RUN dotnet publish "students-mvc.csproj" -c Release -o /app/publish /p:UseAppHos
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-ENV ASPNETCORE_URLS=http://+:5001
-EXPOSE 5001
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
 
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "students-mvc.dll"]
