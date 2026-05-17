@@ -1,0 +1,60 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: school-portal-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - school-portal-data:/var/opt/mssql
+    networks:
+      - school-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${SA_PASSWORD}" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  students-mvc:
+    build:
+      context: ./students-mvc
+      dockerfile: Dockerfile
+    container_name: students-mvc
+    ports:
+      - "5001:5001"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=StudentsDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - school-network
+
+  grades-mvc:
+    build:
+      context: ./grades-mvc
+      dockerfile: Dockerfile
+    container_name: grades-mvc
+    ports:
+      - "5002:5002"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=GradesDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true
+      - StudentsService__BaseUrl=http://students-mvc:5001/
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - school-network
+
+volumes:
+  school-portal-data:
+
+networks:
+  school-network:
+    driver: bridge
