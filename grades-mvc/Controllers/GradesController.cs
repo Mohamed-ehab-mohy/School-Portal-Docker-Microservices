@@ -55,7 +55,7 @@ public class GradesController(
     public async Task<IActionResult> Create()
     {
         await PopulateStudentDropdownAsync();
-        return View(new GradeFormViewModel());
+        return View(new GradeFormViewModel { Date = DateTime.Today });
     }
 
     [HttpPost]
@@ -68,7 +68,8 @@ public class GradesController(
             {
                 StudentId = viewModel.StudentId,
                 Subject = viewModel.Subject,
-                Score = viewModel.Score
+                Score = viewModel.Score,
+                Date = viewModel.Date
             };
 
             context.Add(grade);
@@ -77,8 +78,98 @@ public class GradesController(
         }
 
         await PopulateStudentDropdownAsync();
+        return View(viewModel);
+    }
+
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id is null)
+        {
+            return NotFound();
+        }
+
+        var grade = await context.Grades.FindAsync(id);
+        if (grade is null)
+        {
+            return NotFound();
+        }
+
+        var student = await GetStudentByIdAsync(grade.StudentId);
+
+        return View(new GradeFormViewModel
+        {
+            Id = grade.Id,
+            StudentId = grade.StudentId,
+            StudentName = student?.Name ?? $"Student #{grade.StudentId}",
+            Subject = grade.Subject,
+            Score = grade.Score,
+            Date = grade.Date
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, GradeFormViewModel viewModel)
+    {
+        if (id != viewModel.Id)
+        {
+            return NotFound();
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                var grade = await context.Grades.FindAsync(id);
+                if (grade is null)
+                {
+                    return NotFound();
+                }
+
+                grade.Subject = viewModel.Subject;
+                grade.Score = viewModel.Score;
+                grade.Date = viewModel.Date;
+                await context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await GradeExists(viewModel.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+        }
+
         await PopulateStudentDropdownAsync();
         return View(viewModel);
+    }
+
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id is null)
+        {
+            return NotFound();
+        }
+
+        var grade = await context.Grades.FirstOrDefaultAsync(m => m.Id == id);
+        if (grade is null)
+        {
+            return NotFound();
+        }
+
+        var student = await GetStudentByIdAsync(grade.StudentId);
+        var isStudentServiceUnavailable = student is null;
+
+        if (isStudentServiceUnavailable)
+        {
+            ViewData["WarningMessage"] = "Students service is unavailable. Showing the student ID instead.";
+        }
+
+        return View(ToViewModel(grade, student, isStudentServiceUnavailable));
     }
 
     [HttpPost, ActionName("Delete")]
