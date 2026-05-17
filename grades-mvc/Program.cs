@@ -28,7 +28,6 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<GradesDbContext>();
     context.Database.Migrate();
-    grades_mvc.DbInitializer.Seed(context);
 }
 
 if (!app.Environment.IsDevelopment())
