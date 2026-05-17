@@ -289,13 +289,23 @@ body {
     justify-content: center;
     font-size: 1.1rem;
     text-decoration: none !important;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .footer-social-link:hover {
-    background: var(--primary);
+    transform: translateY(-3px);
+}
+
+.footer-social-link--github:hover {
+    background: #fff;
+    color: #0f172a !important;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.footer-social-link--linkedin:hover {
+    background: #0A66C2;
     color: #fff !important;
-    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(10, 102, 194, 0.4);
 }
 
 .footer-links {
