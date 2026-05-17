@@ -119,6 +119,44 @@ body {
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     background: var(--bg-white);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-hoverable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Buttons: Small ===== */
+.btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-info:hover,
+.btn-outline-danger:hover {
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.btn-outline-info:hover {
+    box-shadow: 0 2px 8px rgba(13, 202, 240, 0.3);
+}
+
+.btn-outline-danger:hover {
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 /* ===== Tables ===== */
@@ -146,8 +184,36 @@ body {
     border-color: var(--border-color);
 }
 
+.table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
 .table tbody tr:hover {
-    background-color: #f8fafc;
+    background-color: #f0f4ff;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+    font-size: 3rem;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.empty-state h5 {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
 }
 
 .table-container {
@@ -248,14 +314,66 @@ a:hover {
     color: #fff;
 }
 
-/* ===== Details/Description Lists ===== */
-dl.row dt {
-    font-weight: 600;
-    color: var(--text-dark);
+/* ===== Details/Profile View ===== */
+.profile-card {
+    max-width: 700px;
 }
 
-dl.row dd {
+.profile-card .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-card .profile-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.profile-card .profile-section {
+    margin-bottom: 1.5rem;
+}
+
+.profile-card .profile-section h6 {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.profile-card .profile-row {
+    display: flex;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.profile-card .profile-row:last-child {
+    border-bottom: none;
+}
+
+.profile-card .profile-label {
+    width: 160px;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.profile-card .profile-value {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-weight: 500;
 }
 
 /* ===== Action Links ===== */

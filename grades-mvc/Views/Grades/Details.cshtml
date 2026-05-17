@@ -4,27 +4,76 @@
     ViewData["Title"] = "Grade Details";
 }
 
-<h1>Grade Details</h1>
+<div class="page-header">
+    <h1>Grade Details</h1>
+    <p>View complete grade information</p>
+</div>
 
 @if (ViewData["WarningMessage"] is string warningMessage)
 {
-    <div class="alert alert-warning" role="alert">@warningMessage</div>
+    <div class="alert alert-warning d-flex align-items-center gap-2" role="alert">
+        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+        <span>@warningMessage</span>
+    </div>
 }
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Student</dt>
-        <dd class="col-sm-10">@Model.StudentName</dd>
-        <dt class="col-sm-2">Student ID</dt>
-        <dd class="col-sm-10">@Model.StudentId</dd>
-        <dt class="col-sm-2">Subject</dt>
-        <dd class="col-sm-10">@Model.Subject</dd>
-        <dt class="col-sm-2">Score</dt>
-        <dd class="col-sm-10">@Model.Score</dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card profile-card">
+            <div class="card-body p-4">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="bi bi-award-fill"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-1">@Model.Subject</h4>
+                        <small class="text-muted">Grade #@Model.Id</small>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h6>Student</h6>
+                    <div class="profile-row">
+                        <span class="profile-label">Name</span>
+                        <span class="profile-value">
+                            @if (Model.IsStudentServiceUnavailable)
+                            {
+                                <span class="badge bg-secondary">ID: @Model.StudentId</span>
+                            }
+                            else
+                            {
+                                @Model.StudentName
+                            }
+                        </span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Student ID</span>
+                        <span class="profile-value">@Model.StudentId</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h6>Grade Information</h6>
+                    <div class="profile-row">
+                        <span class="profile-label">Subject</span>
+                        <span class="profile-value">@Model.Subject</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Score</span>
+                        <span class="profile-value">
+                            <strong>@Model.Score</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top p-3 d-flex gap-2 justify-content-end">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

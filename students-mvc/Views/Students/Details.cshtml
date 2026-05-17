@@ -4,22 +4,57 @@
     ViewData["Title"] = "Student Details";
 }
 
-<h1>Student Details</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DateOfBirth)</dt>
-        <dd class="col-sm-10">@Model.DateOfBirth.ToString("yyyy-MM-dd")</dd>
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EnrollmentDate)</dt>
-        <dd class="col-sm-10">@Model.EnrollmentDate.ToString("yyyy-MM-dd")</dd>
-    </dl>
+<div class="page-header">
+    <h1>Student Details</h1>
+    <p>View complete student information</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card profile-card">
+            <div class="card-body p-4">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-1">@Model.Name</h4>
+                        <small class="text-muted">Student #@Model.Id</small>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h6>Personal Information</h6>
+                    <div class="profile-row">
+                        <span class="profile-label">Full Name</span>
+                        <span class="profile-value">@Model.Name</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Email Address</span>
+                        <span class="profile-value">@Model.Email</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Date of Birth</span>
+                        <span class="profile-value">@Model.DateOfBirth.ToString("yyyy-MM-dd")</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h6>Enrollment</h6>
+                    <div class="profile-row">
+                        <span class="profile-label">Enrollment Date</span>
+                        <span class="profile-value">@Model.EnrollmentDate.ToString("yyyy-MM-dd")</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top p-3 d-flex gap-2 justify-content-end">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
