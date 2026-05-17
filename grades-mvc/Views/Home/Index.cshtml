@@ -1,8 +1,73 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section">
+    <div class="hero-bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <h1 class="hero-title">School Portal</h1>
+            <p class="hero-subtitle">
+                A modern microservices-based school management system.<br>
+                Manage students, track grades, and monitor academic progress — all in one place.
+            </p>
+            <div class="hero-actions">
+                <a href="http://localhost:5001/Students" class="btn btn-hero btn-hero-primary">
+                    <i class="bi bi-people-fill"></i>
+                    Manage Students
+                </a>
+                <a asp-controller="Grades" asp-action="Index" class="btn btn-hero btn-hero-secondary">
+                    <i class="bi bi-award-fill"></i>
+                    Manage Grades
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="stats-row">
+        <div class="col">
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-grades">
+                    <i class="bi bi-journal-text"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">@ViewBag.GradeCount</span>
+                    <span class="stat-label">Total Grades</span>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-subjects">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">@ViewBag.SubjectCount</span>
+                    <span class="stat-label">Subjects</span>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="stat-card">
+                <div class="stat-icon @(ViewBag.StudentsServiceOnline == true ? "stat-icon-online" : "stat-icon-offline")">
+                    <i class="bi @(ViewBag.StudentsServiceOnline == true ? "bi-cloud-check-fill" : "bi-cloud-slash-fill")"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">
+                        <span class="status-dot @(ViewBag.StudentsServiceOnline == true ? "status-dot-green" : "status-dot-red")"></span>
+                    </span>
+                    <span class="stat-label">@(ViewBag.StudentsServiceOnline == true ? "Students Service Online" : "Students Service Offline")</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

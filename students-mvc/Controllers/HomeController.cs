@@ -1,13 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using students_mvc.Data;
 using students_mvc.Models;
 
 namespace students_mvc.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ApplicationDbContext context) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        ViewBag.StudentCount = await context.Students.CountAsync();
         return View();
     }
 
