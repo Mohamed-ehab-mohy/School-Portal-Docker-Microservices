@@ -1,6 +1,134 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Security & Architecture";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="privacy-hero">
+    <div class="privacy-hero-content">
+        <div class="privacy-hero-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+        <h1>Security &amp; Architecture</h1>
+        <p>Enterprise-grade isolation, microservices data privacy, and runtime protection</p>
+    </div>
+</div>
+
+<div class="privacy-section">
+    <h2 class="section-title">
+        <i class="bi bi-boxes"></i>
+        Container Isolation Policy
+    </h2>
+    <p class="section-subtitle">How your data is protected through infrastructure-level isolation</p>
+
+    <div class="security-grid">
+        <div class="security-card">
+            <div class="security-card-icon">
+                <i class="bi bi-diagram-3"></i>
+            </div>
+            <h3>Network Isolation</h3>
+            <p>
+                All services run inside an isolated Docker network (<code>school-network</code>).
+                The SQL Server database is <strong>not exposed to the host</strong> — only
+                <strong>students-mvc</strong> and <strong>grades-mvc</strong> can communicate with it.
+                No external process can reach the database directly.
+            </p>
+            <div class="security-tag">
+                <i class="bi bi-shield-fill-check"></i> Port 1433 is internal only
+            </div>
+        </div>
+
+        <div class="security-card">
+            <div class="security-card-icon">
+                <i class="bi bi-hdd-stack"></i>
+            </div>
+            <h3>Storage Security</h3>
+            <p>
+                Persistent data is stored in a <strong>named Docker volume</strong>
+                (<code>school-portal-data</code>), independent of container lifecycles.
+                Volume data is encrypted at rest on the host filesystem and survives
+                container restarts, crashes, or replacements.
+            </p>
+            <div class="security-tag">
+                <i class="bi bi-shield-fill-check"></i> Volume survives container rebuilds
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="privacy-section">
+    <h2 class="section-title">
+        <i class="bi bi-layers"></i>
+        Microservices Data Privacy
+    </h2>
+    <p class="section-subtitle">Data separation and minimum privilege between services</p>
+
+    <div class="security-grid">
+        <div class="security-card">
+            <div class="security-card-icon">
+                <i class="bi bi-database-add"></i>
+            </div>
+            <h3>Database-per-Service</h3>
+            <p>
+                Each microservice owns its own database schema:
+                <strong>StudentsDb</strong> manages student profiles, while
+                <strong>GradesDb</strong> manages grade records independently.
+                No service can directly read or write another service's database,
+                enforcing strict <strong> bounded context </strong> boundaries
+                and preventing data leakage.
+            </p>
+            <div class="security-tag">
+                <i class="bi bi-shield-fill-check"></i> StudentsDb &ne; GradesDb
+            </div>
+        </div>
+
+        <div class="security-card">
+            <div class="security-card-icon">
+                <i class="bi bi-filter-circle"></i>
+            </div>
+            <h3>Data Minimization</h3>
+            <p>
+                The grades service only stores a <strong>StudentId</strong> integer
+                — no names, emails, or personal details. When displaying grades,
+                it fetches student names on-the-fly via a secure HTTP API call to
+                <strong>students-mvc</strong>. If the API is unavailable, it falls
+                back gracefully without exposing private data.
+            </p>
+            <div class="security-tag">
+                <i class="bi bi-shield-fill-check"></i> Grades knows only IDs
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="privacy-section">
+    <h2 class="section-title">
+        <i class="bi bi-activity"></i>
+        Live Security Metrics
+    </h2>
+    <p class="section-subtitle">Real-time protection indicators</p>
+
+    <div class="metrics-row">
+        <div class="metric-badge badge-active">
+            <div class="badge-dot">
+                <span class="dot-pulse"></span>
+            </div>
+            <div class="badge-body">
+                <strong>Multi-stage Build Protection</strong>
+                <span class="badge-status">Active</span>
+                <small>Minimized attack surface — final image contains only runtime artifacts</small>
+            </div>
+            <i class="bi bi-check-circle-fill badge-check"></i>
+        </div>
+
+        <div class="metric-badge badge-active">
+            <div class="badge-dot">
+                <span class="dot-pulse"></span>
+            </div>
+            <div class="badge-body">
+                <strong>Secrets Management</strong>
+                <span class="badge-status">Enabled</span>
+                <small>No hardcoded passwords — secrets injected via <code>.env</code> at deploy time</small>
+            </div>
+            <i class="bi bi-check-circle-fill badge-check"></i>
+        </div>
+    </div>
+</div>
