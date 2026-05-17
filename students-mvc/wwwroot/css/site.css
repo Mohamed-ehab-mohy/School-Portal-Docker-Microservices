@@ -82,7 +82,7 @@ body {
 /* ===== Main Content ===== */
 .main-content {
     padding-top: 1.5rem;
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
     min-height: calc(100vh - 56px);
 }
 
@@ -225,25 +225,110 @@ body {
 }
 
 /* ===== Footer ===== */
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    white-space: nowrap;
-    line-height: 60px;
-    background: #1e293b;
+.site-footer {
+    background: #0f172a;
     color: rgba(255, 255, 255, 0.65);
     font-size: 0.85rem;
+    padding: 2.5rem 0 0;
+    margin-top: 3rem;
 }
 
-.footer a {
-    color: var(--primary-light) !important;
-    text-decoration: none;
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
 }
 
-.footer a:hover {
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.footer-heading {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.footer-heading svg {
+    flex-shrink: 0;
+}
+
+.footer-text {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0;
+}
+
+.footer-text strong {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+}
+
+.footer-social-link {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    text-decoration: none !important;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-social-link:hover {
+    background: var(--primary);
     color: #fff !important;
-    text-decoration: underline;
+    transform: translateY(-2px);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.4rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.5) !important;
+    text-decoration: none !important;
+    font-size: 0.82rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-light) !important;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem 0;
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
 }
 
 /* ===== Forms ===== */

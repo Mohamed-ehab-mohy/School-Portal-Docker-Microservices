@@ -53,9 +53,43 @@
         </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="site-footer">
         <div class="container">
-            &copy; 2026 - School Portal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h5 class="footer-heading">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        School Portal
+                    </h5>
+                    <p class="footer-text">
+                        A microservices-based school management system built with ASP.NET Core 8.0 MVC, Docker containers, and SQL Server.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h5 class="footer-heading">Developer</h5>
+                    <p class="footer-text">
+                        Built by <strong>Mohamed Ehab</strong>
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://github.com/Mohamed-ehab-mohy" target="_blank" class="footer-social-link" title="GitHub">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/mohamed-ehab-mohy" target="_blank" class="footer-social-link" title="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door"></i> Home</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-shield-check"></i> Transparency Hub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 School Portal — Mohamed Ehab
+            </div>
         </div>
     </footer>
 
