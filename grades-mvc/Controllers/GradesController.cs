@@ -52,8 +52,9 @@ public class GradesController(
         return View(ToViewModel(grade, student, isStudentServiceUnavailable));
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        await PopulateStudentDropdownAsync();
         return View(new GradeFormViewModel());
     }
 
@@ -75,93 +76,9 @@ public class GradesController(
             return RedirectToAction(nameof(Index));
         }
 
+        await PopulateStudentDropdownAsync();
+        await PopulateStudentDropdownAsync();
         return View(viewModel);
-    }
-
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id is null)
-        {
-            return NotFound();
-        }
-
-        var grade = await context.Grades.FindAsync(id);
-        if (grade is null)
-        {
-            return NotFound();
-        }
-
-        return View(new GradeFormViewModel
-        {
-            Id = grade.Id,
-            StudentId = grade.StudentId,
-            Subject = grade.Subject,
-            Score = grade.Score
-        });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, GradeFormViewModel viewModel)
-    {
-        if (id != viewModel.Id)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                var grade = new Grade
-                {
-                    Id = viewModel.Id,
-                    StudentId = viewModel.StudentId,
-                    Subject = viewModel.Subject,
-                    Score = viewModel.Score
-                };
-
-                context.Update(grade);
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await GradeExists(viewModel.Id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(viewModel);
-    }
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id is null)
-        {
-            return NotFound();
-        }
-
-        var grade = await context.Grades.FirstOrDefaultAsync(m => m.Id == id);
-        if (grade is null)
-        {
-            return NotFound();
-        }
-
-        var student = await GetStudentByIdAsync(grade.StudentId);
-        var isStudentServiceUnavailable = student is null;
-
-        if (isStudentServiceUnavailable)
-        {
-            ViewData["WarningMessage"] = "Students service is unavailable. Showing the student ID instead.";
-        }
-
-        return View(ToViewModel(grade, student, isStudentServiceUnavailable));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -240,6 +157,16 @@ public class GradesController(
             Score = grade.Score,
             IsStudentServiceUnavailable = isStudentServiceUnavailable
         };
+    }
+
+    private async Task PopulateStudentDropdownAsync()
+    {
+        var students = await GetStudentsByIdAsync();
+        if (students is not null)
+        {
+            ViewBag.StudentList = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                students.Values, "Id", "Name");
+        }
     }
 
     private Task<bool> GradeExists(int id)

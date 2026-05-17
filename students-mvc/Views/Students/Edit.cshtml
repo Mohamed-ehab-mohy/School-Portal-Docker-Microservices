@@ -4,39 +4,54 @@
     ViewData["Title"] = "Edit Student";
 }
 
-<h1>Edit Student</h1>
+<div class="page-header">
+    <h1>Edit Student</h1>
+    <p>Update student information</p>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Full Name" />
+                        <label asp-for="Name"></label>
+                        <span asp-validation-for="Name" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Email Address" />
+                        <label asp-for="Email"></label>
+                        <span asp-validation-for="Email" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="DateOfBirth" type="date" class="form-control @(ViewData.ModelState["DateOfBirth"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Date of Birth" />
+                        <label asp-for="DateOfBirth"></label>
+                        <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="EnrollmentDate" type="date" class="form-control @(ViewData.ModelState["EnrollmentDate"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Enrollment Date" />
+                        <label asp-for="EnrollmentDate"></label>
+                        <span asp-validation-for="EnrollmentDate" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Save
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-lg"></i> Cancel
+                        </a>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="DateOfBirth" class="form-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" asp-format="{0:yyyy-MM-dd}" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="EnrollmentDate" class="form-label"></label>
-                <input asp-for="EnrollmentDate" class="form-control" asp-format="{0:yyyy-MM-dd}" />
-                <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
