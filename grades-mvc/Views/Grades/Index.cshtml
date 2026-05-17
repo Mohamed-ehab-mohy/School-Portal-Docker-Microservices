@@ -19,8 +19,8 @@
 
 @if (ViewData["WarningMessage"] is string warningMessage)
 {
-    <div class="alert alert-warning d-flex align-items-center gap-2" role="alert">
-        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+    <div class="alert alert-warning alert-fade-in d-flex align-items-center gap-2" role="alert">
+        <i class="bi bi-exclamation-triangle-fill fs-5 alert-icon-pulse"></i>
         <span>@warningMessage</span>
     </div>
 }

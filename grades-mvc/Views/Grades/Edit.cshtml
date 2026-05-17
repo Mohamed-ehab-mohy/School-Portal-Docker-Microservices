@@ -10,7 +10,7 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
+    <div class="form-container">
         <div class="card">
             <div class="card-body p-4">
                 <form asp-action="Edit">
@@ -20,13 +20,13 @@
                     <div class="form-floating mb-3">
                         @if (ViewBag.StudentList != null)
                         {
-                            <select asp-for="StudentId" asp-items="ViewBag.StudentList" class="form-select @(ViewData.ModelState["StudentId"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                            <select asp-for="StudentId" asp-items="ViewBag.StudentList" class="form-select @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["StudentId"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")">
                                 <option value="">-- Select Student --</option>
                             </select>
                         }
                         else
                         {
-                            <input asp-for="StudentId" class="form-control @(ViewData.ModelState["StudentId"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Student ID" />
+                            <input asp-for="StudentId" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["StudentId"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Student ID" />
                         }
                         <label asp-for="StudentId"></label>
                         <span asp-validation-for="StudentId" class="invalid-feedback"></span>
@@ -37,13 +37,13 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="Subject" class="form-control @(ViewData.ModelState["Subject"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Subject" />
+                        <input asp-for="Subject" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["Subject"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Subject" />
                         <label asp-for="Subject"></label>
                         <span asp-validation-for="Subject" class="invalid-feedback"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="Score" class="form-control @(ViewData.ModelState["Score"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Score" />
+                        <input asp-for="Score" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["Score"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Score" />
                         <label asp-for="Score"></label>
                         <span asp-validation-for="Score" class="invalid-feedback"></span>
                     </div>

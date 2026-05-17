@@ -10,7 +10,7 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
+    <div class="form-container">
         <div class="card">
             <div class="card-body p-4">
                 <form asp-action="Edit">
@@ -18,25 +18,25 @@
                     <input type="hidden" asp-for="Id" />
 
                     <div class="form-floating mb-3">
-                        <input asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Full Name" />
+                        <input asp-for="Name" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Full Name" />
                         <label asp-for="Name"></label>
                         <span asp-validation-for="Name" class="invalid-feedback"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Email Address" />
+                        <input asp-for="Email" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Email Address" />
                         <label asp-for="Email"></label>
                         <span asp-validation-for="Email" class="invalid-feedback"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="DateOfBirth" type="date" class="form-control @(ViewData.ModelState["DateOfBirth"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Date of Birth" />
+                        <input asp-for="DateOfBirth" type="date" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["DateOfBirth"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Date of Birth" />
                         <label asp-for="DateOfBirth"></label>
                         <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="EnrollmentDate" type="date" class="form-control @(ViewData.ModelState["EnrollmentDate"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Enrollment Date" />
+                        <input asp-for="EnrollmentDate" type="date" class="form-control @(!ViewData.ModelState.IsValid ? (ViewData.ModelState["EnrollmentDate"]?.Errors.Count > 0 ? "is-invalid" : "is-valid") : "")" placeholder="Enrollment Date" />
                         <label asp-for="EnrollmentDate"></label>
                         <span asp-validation-for="EnrollmentDate" class="invalid-feedback"></span>
                     </div>
