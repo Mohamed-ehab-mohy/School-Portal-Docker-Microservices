@@ -158,8 +158,3 @@ School-Portal/
 [![GitHub](https://img.shields.io/badge/GitHub-Mohamed--ehab--mohy-181717?logo=github)](https://github.com/Mohamed-ehab-mohy)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mohamed%20Ehab-0A66C2?logo=linkedin)](https://linkedin.com/in/mohamed-ehab-mohy)
 
----
-
-## License
-
-MIT
