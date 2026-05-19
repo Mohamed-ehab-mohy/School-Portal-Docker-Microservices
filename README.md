@@ -1,11 +1,11 @@
-# 🏫 School Portal — Microservices Architecture
+# 🏫 School Portal => Microservices Architecture
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-✔-2496ED?logo=docker)](https://docs.docker.com/compose/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/en-us/sql-server)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own SQL Server database — ensuring complete **data autonomy and fault isolation**.
+A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own SQL Server database ensuring complete **data autonomy and fault isolation**.
 
 ---
 
@@ -101,13 +101,13 @@ No manual connection string changes needed between environments.
 
 ### ⚡ Layer Caching Optimization
 Dockerfiles are structured in **two stages**:
-1. **Restore layer** — NuGet packages are restored and cached as a separate layer
-2. **Publish layer** — only the source code is rebuilt on subsequent runs
+1. **Restore layer** => NuGet packages are restored and cached as a separate layer
+2. **Publish layer** => only the source code is rebuilt on subsequent runs
 
 This means repeated `docker compose up --build` calls are significantly faster since the package restore layer is reused from cache unless `*.csproj` changes.
 
 ### 🗄️ Data Seeding via EF Core HasData()
-20 students and 20 grades are seeded directly in `OnModelCreating()` using `HasData()`, generating proper `InsertData`/`DeleteData` migration operations. No runtime seed scripts — the data is part of the migration history.
+20 students and 20 grades are seeded directly in `OnModelCreating()` using `HasData()`, generating proper `InsertData`/`DeleteData` migration operations. No runtime seed scripts the data is part of the migration history.
 
 ### 🔒 Data Isolation (per-service database)
 Each microservice has its **own SQL Server database** (`StudentsDB` / `GradesDB`) on the same database host. This guarantees:
@@ -153,7 +153,7 @@ School-Portal/
 
 ## Author
 
-**Mohamed Ehab** — Full-stack .NET Developer
+**Mohamed Ehab** _ Full-stack .NET Developer
 
 [![GitHub](https://img.shields.io/badge/GitHub-Mohamed--ehab--mohy-181717?logo=github)](https://github.com/Mohamed-ehab-mohy)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mohamed%20Ehab-0A66C2?logo=linkedin)](https://linkedin.com/in/mohamed-ehab-mohy)
