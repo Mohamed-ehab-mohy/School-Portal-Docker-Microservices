@@ -22,7 +22,7 @@ namespace grades_mvc.Data.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     CourseName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Score = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    GradeDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,7 +31,7 @@ namespace grades_mvc.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Grades",
-                columns: new[] { "Id", "CourseName", "Date", "Score", "StudentId" },
+                columns: new[] { "Id", "CourseName", "GradeDate", "Score", "StudentId" },
                 values: new object[,]
                 {
                     { 1, "Mathematics", new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 83m, 1 },

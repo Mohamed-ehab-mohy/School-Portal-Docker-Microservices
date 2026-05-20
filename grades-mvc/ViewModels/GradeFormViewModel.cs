@@ -21,5 +21,5 @@ public class GradeFormViewModel
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime Date { get; set; }
+    public DateTime GradeDate { get; set; }
 }

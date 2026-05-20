@@ -55,7 +55,7 @@ public class GradesController(
     public async Task<IActionResult> Create()
     {
         await PopulateStudentDropdownAsync();
-        return View(new GradeFormViewModel { Date = DateTime.Today });
+        return View(new GradeFormViewModel { GradeDate = DateTime.Today });
     }
 
     [HttpPost]
@@ -69,7 +69,7 @@ public class GradesController(
                 StudentId = viewModel.StudentId,
                 CourseName = viewModel.CourseName,
                 Score = viewModel.Score,
-                Date = viewModel.Date
+                GradeDate = viewModel.GradeDate
             };
 
             context.Add(grade);
@@ -103,7 +103,7 @@ public class GradesController(
             StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
             CourseName = grade.CourseName,
             Score = grade.Score,
-            Date = grade.Date
+            GradeDate = grade.GradeDate
         });
     }
 
@@ -128,7 +128,7 @@ public class GradesController(
 
                 grade.CourseName = viewModel.CourseName;
                 grade.Score = viewModel.Score;
-                grade.Date = viewModel.Date;
+                grade.GradeDate = viewModel.GradeDate;
                 await context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

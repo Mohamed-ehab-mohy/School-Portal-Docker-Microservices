@@ -40,6 +40,10 @@
                         <td class="text-muted fw-semibold">Score</td>
                         <td>@Model.Score</td>
                     </tr>
+                    <tr>
+                        <td class="text-muted fw-semibold">Date</td>
+                        <td>@Model.GradeDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
                 </table>
 
                 <form asp-action="Delete">

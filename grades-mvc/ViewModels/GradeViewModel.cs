@@ -12,5 +12,7 @@ public class GradeViewModel
 
     public decimal Score { get; set; }
 
+    public DateTime GradeDate { get; set; }
+
     public bool IsStudentServiceUnavailable { get; set; }
 }

@@ -12,7 +12,7 @@ using grades_mvc.Data;
 namespace grades_mvc.Data.Migrations
 {
     [DbContext(typeof(GradesDbContext))]
-    [Migration("20260520115601_InitialGradesSchema")]
+    [Migration("20260520115854_InitialGradesSchema")]
     partial class InitialGradesSchema
     {
         /// <inheritdoc />
@@ -38,7 +38,7 @@ namespace grades_mvc.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("GradeDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Score")
@@ -57,7 +57,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 1,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 83m,
                             StudentId = 1
                         },
@@ -65,7 +65,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 2,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 57m,
                             StudentId = 2
                         },
@@ -73,7 +73,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 3,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 56m,
                             StudentId = 3
                         },
@@ -81,7 +81,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 4,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 76m,
                             StudentId = 4
                         },
@@ -89,7 +89,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 5,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 58m,
                             StudentId = 5
                         },
@@ -97,7 +97,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 6,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 63m,
                             StudentId = 6
                         },
@@ -105,7 +105,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 7,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 86m,
                             StudentId = 7
                         },
@@ -113,7 +113,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 8,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 75m,
                             StudentId = 8
                         },
@@ -121,7 +121,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 9,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 58m,
                             StudentId = 9
                         },
@@ -129,7 +129,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 10,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 88m,
                             StudentId = 10
                         },
@@ -137,7 +137,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 11,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 61m,
                             StudentId = 11
                         },
@@ -145,7 +145,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 12,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 62m,
                             StudentId = 12
                         },
@@ -153,7 +153,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 13,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 75m,
                             StudentId = 13
                         },
@@ -161,7 +161,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 14,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 66m,
                             StudentId = 14
                         },
@@ -169,7 +169,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 15,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 69m,
                             StudentId = 15
                         },
@@ -177,7 +177,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 16,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 63m,
                             StudentId = 16
                         },
@@ -185,7 +185,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 17,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 75m,
                             StudentId = 17
                         },
@@ -193,7 +193,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 18,
                             CourseName = "English",
-                            Date = new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 51m,
                             StudentId = 18
                         },
@@ -201,7 +201,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 19,
                             CourseName = "Mathematics",
-                            Date = new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 90m,
                             StudentId = 19
                         },
@@ -209,7 +209,7 @@ namespace grades_mvc.Data.Migrations
                         {
                             Id = 20,
                             CourseName = "Science",
-                            Date = new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 78m,
                             StudentId = 20
                         });

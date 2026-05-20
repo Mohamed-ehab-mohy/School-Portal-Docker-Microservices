@@ -27,7 +27,7 @@ public class GradesDbContext(DbContextOptions<GradesDbContext> options) : DbCont
                 StudentId = i,
                 CourseName = subjects[(i - 1) % subjects.Length],
                 Score = random.Next(50, 100),
-                Date = new DateTime(2025, 9, 1).AddDays(i - 1)
+                GradeDate = new DateTime(2025, 9, 1).AddDays(i - 1)
             });
         }
 
