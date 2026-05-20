@@ -20,7 +20,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             students.Add(new Student
             {
                 Id = i,
-                Name = $"{firstNames[(i - 1) % firstNames.Length]} {lastNames[(i - 1) % lastNames.Length]}",
+                FirstName = firstNames[(i - 1) % firstNames.Length],
+                LastName = lastNames[(i - 1) % lastNames.Length],
                 Email = $"student{i:00}@school.com",
                 DateOfBirth = new DateTime(2000 + (i / 12), (i % 12) + 1, (i % 28) + 1),
                 EnrollmentDate = new DateTime(2024, 9, 1).AddDays(i - 1)

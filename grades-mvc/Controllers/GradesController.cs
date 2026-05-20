@@ -100,7 +100,7 @@ public class GradesController(
         {
             Id = grade.Id,
             StudentId = grade.StudentId,
-            StudentName = student?.Name ?? $"Student #{grade.StudentId}",
+            StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
             Subject = grade.Subject,
             Score = grade.Score,
             Date = grade.Date
@@ -243,7 +243,7 @@ public class GradesController(
         {
             Id = grade.Id,
             StudentId = grade.StudentId,
-            StudentName = student?.Name ?? $"Student #{grade.StudentId}",
+            StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
             Subject = grade.Subject,
             Score = grade.Score,
             IsStudentServiceUnavailable = isStudentServiceUnavailable
@@ -256,7 +256,7 @@ public class GradesController(
         if (students is not null)
         {
             ViewBag.StudentList = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-                students.Values, "Id", "Name");
+                students.Values, "Id", "FullName");
         }
     }
 

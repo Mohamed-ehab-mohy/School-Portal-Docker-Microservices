@@ -12,8 +12,8 @@ using students_mvc.Data;
 namespace students_mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260517204103_SeedStudents")]
-    partial class SeedStudents
+    [Migration("20260520115123_InitialSchoolSchema")]
+    partial class InitialSchoolSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,10 +44,15 @@ namespace students_mvc.Data.Migrations
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -60,7 +65,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student01@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ahmed Ali"
+                            FirstName = "Ahmed",
+                            LastName = "Ali"
                         },
                         new
                         {
@@ -68,7 +74,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student02@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mohamed Hassan"
+                            FirstName = "Mohamed",
+                            LastName = "Hassan"
                         },
                         new
                         {
@@ -76,7 +83,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student03@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ali Ibrahim"
+                            FirstName = "Ali",
+                            LastName = "Ibrahim"
                         },
                         new
                         {
@@ -84,7 +92,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student04@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Omar Saleh"
+                            FirstName = "Omar",
+                            LastName = "Saleh"
                         },
                         new
                         {
@@ -92,7 +101,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student05@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Khaled Nour"
+                            FirstName = "Khaled",
+                            LastName = "Nour"
                         },
                         new
                         {
@@ -100,7 +110,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student06@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Youssef Adel"
+                            FirstName = "Youssef",
+                            LastName = "Adel"
                         },
                         new
                         {
@@ -108,7 +119,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student07@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Hassan Karim"
+                            FirstName = "Hassan",
+                            LastName = "Karim"
                         },
                         new
                         {
@@ -116,7 +128,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student08@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mahmoud Fahmy"
+                            FirstName = "Mahmoud",
+                            LastName = "Fahmy"
                         },
                         new
                         {
@@ -124,7 +137,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student09@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Tarek Saeed"
+                            FirstName = "Tarek",
+                            LastName = "Saeed"
                         },
                         new
                         {
@@ -132,7 +146,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student10@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Sami Mansour"
+                            FirstName = "Sami",
+                            LastName = "Mansour"
                         },
                         new
                         {
@@ -140,7 +155,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2000, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student11@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ahmed Ali"
+                            FirstName = "Ahmed",
+                            LastName = "Ali"
                         },
                         new
                         {
@@ -148,7 +164,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student12@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mohamed Hassan"
+                            FirstName = "Mohamed",
+                            LastName = "Hassan"
                         },
                         new
                         {
@@ -156,7 +173,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student13@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ali Ibrahim"
+                            FirstName = "Ali",
+                            LastName = "Ibrahim"
                         },
                         new
                         {
@@ -164,7 +182,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student14@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Omar Saleh"
+                            FirstName = "Omar",
+                            LastName = "Saleh"
                         },
                         new
                         {
@@ -172,7 +191,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student15@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Khaled Nour"
+                            FirstName = "Khaled",
+                            LastName = "Nour"
                         },
                         new
                         {
@@ -180,7 +200,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student16@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Youssef Adel"
+                            FirstName = "Youssef",
+                            LastName = "Adel"
                         },
                         new
                         {
@@ -188,7 +209,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student17@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Hassan Karim"
+                            FirstName = "Hassan",
+                            LastName = "Karim"
                         },
                         new
                         {
@@ -196,7 +218,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student18@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mahmoud Fahmy"
+                            FirstName = "Mahmoud",
+                            LastName = "Fahmy"
                         },
                         new
                         {
@@ -204,7 +227,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student19@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Tarek Saeed"
+                            FirstName = "Tarek",
+                            LastName = "Saeed"
                         },
                         new
                         {
@@ -212,7 +236,8 @@ namespace students_mvc.Data.Migrations
                             DateOfBirth = new DateTime(2001, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "student20@school.com",
                             EnrollmentDate = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Sami Mansour"
+                            FirstName = "Sami",
+                            LastName = "Mansour"
                         });
                 });
 #pragma warning restore 612, 618

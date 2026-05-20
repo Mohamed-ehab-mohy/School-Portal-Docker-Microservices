@@ -90,7 +90,7 @@ Auto-migrations and data seeding (20 students + 20 grades) execute automatically
 ## Advanced Features
 
 ### 🔁 Resiliency & Fallback UI
-If the students service goes down, the grades service **does not crash**. The `StudentsServiceClient` wraps all HTTP calls in `try/catch` blocks for both `HttpRequestException` and `TaskCanceledException`. When the service is unavailable, grades pages gracefully display **student IDs** instead of names, with a polished orange warning banner (`alert-warning` + fade-in animation).
+If the students service goes down, the grades service **does not crash**. The controllers wrap `StudentsServiceClient` calls in `try/catch` blocks for both `HttpRequestException` and `TaskCanceledException`. When the service is unavailable, grades pages gracefully display **student IDs** instead of names, with a polished orange warning banner (`alert-warning` + fade-in animation).
 
 ### 🌍 Multi-Environment Setup
 The project seamlessly runs in two environments:
