@@ -67,7 +67,7 @@ public class GradesController(
             var grade = new Grade
             {
                 StudentId = viewModel.StudentId,
-                Subject = viewModel.Subject,
+                CourseName = viewModel.CourseName,
                 Score = viewModel.Score,
                 Date = viewModel.Date
             };
@@ -101,7 +101,7 @@ public class GradesController(
             Id = grade.Id,
             StudentId = grade.StudentId,
             StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
-            Subject = grade.Subject,
+            CourseName = grade.CourseName,
             Score = grade.Score,
             Date = grade.Date
         });
@@ -126,7 +126,7 @@ public class GradesController(
                     return NotFound();
                 }
 
-                grade.Subject = viewModel.Subject;
+                grade.CourseName = viewModel.CourseName;
                 grade.Score = viewModel.Score;
                 grade.Date = viewModel.Date;
                 await context.SaveChangesAsync();
@@ -244,7 +244,7 @@ public class GradesController(
             Id = grade.Id,
             StudentId = grade.StudentId,
             StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
-            Subject = grade.Subject,
+            CourseName = grade.CourseName,
             Score = grade.Score,
             IsStudentServiceUnavailable = isStudentServiceUnavailable
         };

@@ -13,7 +13,7 @@ public class GradeFormViewModel
 
     [Required]
     [StringLength(100)]
-    public string Subject { get; set; } = string.Empty;
+    public string CourseName { get; set; } = string.Empty;
 
     [Required]
     [Range(0, 100)]

@@ -15,7 +15,7 @@ public class HomeController(
     public async Task<IActionResult> Index()
     {
         ViewBag.GradeCount = await context.Grades.CountAsync();
-        ViewBag.SubjectCount = await context.Grades.Select(g => g.Subject).Distinct().CountAsync();
+        ViewBag.SubjectCount = await context.Grades.Select(g => g.CourseName).Distinct().CountAsync();
 
         try
         {

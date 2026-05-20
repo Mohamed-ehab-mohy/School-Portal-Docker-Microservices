@@ -33,7 +33,7 @@
                 <tr>
                     <th>Student</th>
                     <th>Student ID</th>
-                    <th>Subject</th>
+                    <th>Course</th>
                     <th>Score</th>
                     <th class="text-end">Actions</th>
                 </tr>
@@ -53,7 +53,7 @@
                         }
                     </td>
                     <td>@item.StudentId</td>
-                    <td>@item.Subject</td>
+                    <td>@item.CourseName</td>
                     <td><strong>@item.Score</strong></td>
                     <td class="text-end text-nowrap">
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Edit">
