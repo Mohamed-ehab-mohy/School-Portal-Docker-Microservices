@@ -44,6 +44,13 @@
                         <td class="text-muted fw-semibold">Date</td>
                         <td>@Model.GradeDate.ToString("yyyy-MM-dd")</td>
                     </tr>
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <tr>
+                            <td class="text-muted fw-semibold">Notes</td>
+                            <td>@Model.Notes</td>
+                        </tr>
+                    }
                 </table>
 
                 <form asp-action="Delete">

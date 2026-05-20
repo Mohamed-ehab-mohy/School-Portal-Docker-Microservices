@@ -20,4 +20,7 @@ public class Grade
     [Required]
     [DataType(DataType.Date)]
     public DateTime GradeDate { get; set; }
+
+    [StringLength(500)]
+    public string? Notes { get; set; }
 }

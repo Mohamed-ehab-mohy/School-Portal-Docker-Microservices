@@ -68,6 +68,13 @@
                         <span class="profile-label">Date</span>
                         <span class="profile-value">@Model.GradeDate.ToString("yyyy-MM-dd")</span>
                     </div>
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <div class="profile-row">
+                            <span class="profile-label">Notes</span>
+                            <span class="profile-value">@Model.Notes</span>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top p-3 d-flex gap-2 justify-content-end">

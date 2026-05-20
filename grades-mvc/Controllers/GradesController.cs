@@ -69,7 +69,8 @@ public class GradesController(
                 StudentId = viewModel.StudentId,
                 CourseName = viewModel.CourseName,
                 Score = viewModel.Score,
-                GradeDate = viewModel.GradeDate
+                GradeDate = viewModel.GradeDate,
+                Notes = viewModel.Notes
             };
 
             context.Add(grade);
@@ -103,7 +104,8 @@ public class GradesController(
             StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
             CourseName = grade.CourseName,
             Score = grade.Score,
-            GradeDate = grade.GradeDate
+            GradeDate = grade.GradeDate,
+            Notes = grade.Notes
         });
     }
 
@@ -129,6 +131,7 @@ public class GradesController(
                 grade.CourseName = viewModel.CourseName;
                 grade.Score = viewModel.Score;
                 grade.GradeDate = viewModel.GradeDate;
+                grade.Notes = viewModel.Notes;
                 await context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -246,6 +249,8 @@ public class GradesController(
             StudentName = student?.FullName ?? $"Student #{grade.StudentId}",
             CourseName = grade.CourseName,
             Score = grade.Score,
+            GradeDate = grade.GradeDate,
+            Notes = grade.Notes,
             IsStudentServiceUnavailable = isStudentServiceUnavailable
         };
     }

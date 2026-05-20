@@ -14,5 +14,7 @@ public class GradeViewModel
 
     public DateTime GradeDate { get; set; }
 
+    public string? Notes { get; set; }
+
     public bool IsStudentServiceUnavailable { get; set; }
 }
