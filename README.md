@@ -7,6 +7,13 @@
 
 A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own SQL Server database ensuring complete **data autonomy and fault isolation**.
 
+### Data Models
+
+| Service | Model | Fields |
+|---------|-------|--------|
+| **students-mvc** | `Student` | Id, **FirstName**, **LastName**, Email *(unique)*, DateOfBirth, EnrollmentDate |
+| **grades-mvc** | `Grade` | Id, StudentId, **CourseName**, Score, **GradeDate**, Notes *(optional)* |
+
 ---
 
 ## Architecture Diagram
@@ -107,7 +114,7 @@ Dockerfiles are structured in **two stages**:
 This means repeated `docker compose up --build` calls are significantly faster since the package restore layer is reused from cache unless `*.csproj` changes.
 
 ### 🗄️ Data Seeding via EF Core HasData()
-20 students and 20 grades are seeded directly in `OnModelCreating()` using `HasData()`, generating proper `InsertData`/`DeleteData` migration operations. No runtime seed scripts the data is part of the migration history.
+20 students (with `FirstName` + `LastName` split) and 20 grades (with `CourseName`, `GradeDate`, `Notes`) are seeded directly in `OnModelCreating()` using `HasData()`, generating proper `InsertData`/`DeleteData` migration operations. No runtime seed scripts — the data is part of the migration history.
 
 ### 🔒 Data Isolation (per-service database)
 Each microservice has its **own SQL Server database** (`StudentsDB` / `GradesDB`) on the same database host. This guarantees:
@@ -130,18 +137,18 @@ Each microservice has its **own SQL Server database** (`StudentsDB` / `GradesDB`
 ```
 School-Portal/
 ├── students-mvc/           # Students microservice
-│   ├── Controllers/
-│   ├── Data/               # ApplicationDbContext + SeedStudents migration
-│   ├── Models/             # Student entity
-│   ├── Views/
+│   ├── Controllers/        # StudentsController + HomeController
+│   ├── Data/               # ApplicationDbContext + Migrations
+│   ├── Models/             # Student (Id, FirstName, LastName, Email*, DoB, Enroll)
+│   ├── Views/              # Index, Create, Edit, Delete, Details
 │   └── wwwroot/
 ├── grades-mvc/             # Grades microservice
 │   ├── Controllers/        # GradesController + HomeController
-│   ├── Data/               # GradesDbContext + SeedGrades migration
-│   ├── Models/             # Grade entity
+│   ├── Data/               # GradesDbContext + Migrations
+│   ├── Models/             # Grade (Id, StudentId, CourseName, Score, GradeDate, Notes?)
 │   ├── Services/           # StudentsServiceClient (HTTP)
 │   ├── ViewModels/         # GradeFormViewModel + GradeViewModel
-│   ├── Views/
+│   ├── Views/              # Index, Create, Edit, Delete, Details
 │   └── wwwroot/
 ├── docker-compose.yml      # Full orchestration
 ├── .env                    # SQL Server password (gitignored)
