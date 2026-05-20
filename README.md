@@ -3,7 +3,6 @@
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-✔-2496ED?logo=docker)](https://docs.docker.com/compose/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/en-us/sql-server)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own SQL Server database ensuring complete **data autonomy and fault isolation**.
 
