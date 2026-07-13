@@ -36,6 +36,14 @@
                         </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                                        <i class="bi bi-speedometer2"></i> Dashboard
+                                    </a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
                             {
                                 <li class="nav-item">
@@ -67,8 +75,8 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="@gradesUrl/Grades/Create">
-                                        <i class="bi bi-plus-circle"></i> Add Grade
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")" asp-area="" asp-controller="Reports" asp-action="Index">
+                                        <i class="bi bi-file-bar-graph"></i> Reports
                                     </a>
                                 </li>
                             }

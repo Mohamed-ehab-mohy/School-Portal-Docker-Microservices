@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="page-header">
+    <h1>Reports</h1>
+    <p>Generate and view school reports</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-person-check fs-1 text-primary"></i>
+                <h5 class="mt-3">Student Performance</h5>
+                <p class="text-muted">View individual student attendance and performance metrics</p>
+                <a asp-action="StudentPerformance" class="btn btn-primary">
+                    <i class="bi bi-arrow-right"></i> View Report
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-calendar-check fs-1 text-success"></i>
+                <h5 class="mt-3">Attendance Report</h5>
+                <p class="text-muted">Detailed attendance analytics with date range filtering</p>
+                <a asp-action="AttendanceReport" class="btn btn-success">
+                    <i class="bi bi-arrow-right"></i> View Report
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-building fs-1 text-info"></i>
+                <h5 class="mt-3">Class Report</h5>
+                <p class="text-muted">Class-wise statistics including teachers and students</p>
+                <a asp-action="ClassReport" class="btn btn-info">
+                    <i class="bi bi-arrow-right"></i> View Report
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

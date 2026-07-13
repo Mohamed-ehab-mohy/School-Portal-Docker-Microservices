@@ -1,0 +1,70 @@
+@model List<students_mvc.Controllers.ClassReportViewModel>
+
+@{
+    ViewData["Title"] = "Class Report";
+}
+
+<div class="page-header">
+    <h1>Class Report</h1>
+    <p>Class-wise statistics and details</p>
+</div>
+
+@foreach (var cls in Model)
+{
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-building"></i> @cls.ClassName
+                <span class="badge bg-primary ms-2">@cls.Grade</span>
+            </h5>
+            <span class="badge bg-success">Attendance: @cls.AttendanceRate%</span>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <strong>Room:</strong> @cls.RoomNumber
+                </div>
+                <div class="col-md-3">
+                    <strong>Students:</strong> @cls.StudentCount / @cls.Capacity
+                </div>
+                <div class="col-md-6">
+                    <strong>Teachers:</strong>
+                    @foreach (var teacher in cls.Teachers)
+                    {
+                        <span class="badge bg-info">@teacher</span>
+                    }
+                </div>
+            </div>
+
+            <div class="progress mb-3" style="height: 25px;">
+                <div class="progress-bar @(cls.AttendanceRate >= 80 ? "bg-success" : cls.AttendanceRate >= 60 ? "bg-warning" : "bg-danger")"
+                     role="progressbar"
+                     style="width: @cls.AttendanceRate%"
+                     aria-valuenow="@cls.AttendanceRate"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    @cls.AttendanceRate% Attendance
+                </div>
+            </div>
+
+            <h6>Enrolled Students:</h6>
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in cls.Students)
+                    {
+                        <tr>
+                            <td>@student.Name</td>
+                            <td>@student.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

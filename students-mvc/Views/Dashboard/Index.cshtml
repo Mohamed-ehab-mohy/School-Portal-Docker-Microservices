@@ -1,0 +1,239 @@
+@model students_mvc.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <h1>Dashboard</h1>
+    <p>Real-time school analytics and insights</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-primary">
+            <div class="card-body text-center">
+                <i class="bi bi-people fs-1 text-primary"></i>
+                <h2 class="mt-2 mb-0">@Model.TotalStudents</h2>
+                <p class="text-muted mb-0">Total Students</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info">
+            <div class="card-body text-center">
+                <i class="bi bi-person-badge fs-1 text-info"></i>
+                <h2 class="mt-2 mb-0">@Model.TotalTeachers</h2>
+                <p class="text-muted mb-0">Total Teachers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <i class="bi bi-building fs-1 text-success"></i>
+                <h2 class="mt-2 mb-0">@Model.TotalClasses</h2>
+                <p class="text-muted mb-0">Total Classes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <i class="bi bi-clipboard-check fs-1 text-warning"></i>
+                <h2 class="mt-2 mb-0">@Model.AttendanceRateToday%</h2>
+                <p class="text-muted mb-0">Attendance Today</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Today's Attendance -->
+<div class="row g-4 mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Today's Attendance Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded bg-success bg-opacity-10">
+                            <h3 class="text-success mb-0">@Model.StudentsPresentToday</h3>
+                            <p class="text-muted mb-0">Present</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded bg-danger bg-opacity-10">
+                            <h3 class="text-danger mb-0">@Model.StudentsAbsentToday</h3>
+                            <p class="text-muted mb-0">Absent</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded bg-warning bg-opacity-10">
+                            <h3 class="text-warning mb-0">@Model.StudentsLateToday</h3>
+                            <p class="text-muted mb-0">Late</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Attendance Rate</h5>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <div class="position-relative" style="width: 150px; height: 150px;">
+                    <svg viewBox="0 0 36 36" class="w-100 h-100">
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none" stroke="#eee" stroke-width="3"></path>
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none" stroke="@(Model.AttendanceRateToday >= 80 ? "#28a745" : Model.AttendanceRateToday >= 60 ? "#ffc107" : "#dc3545")"
+                              stroke-width="3"
+                              stroke-dasharray="@Model.AttendanceRateToday, 100"></path>
+                    </svg>
+                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                        <h3 class="mb-0">@(Model.AttendanceRateToday)%</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Class Statistics -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Class Statistics</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Students</th>
+                            <th>Attendance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cls in Model.ClassStats)
+                        {
+                            <tr>
+                                <td><strong>@cls.ClassName</strong></td>
+                                <td>@cls.StudentCount</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar @(cls.AttendanceRate >= 80 ? "bg-success" : cls.AttendanceRate >= 60 ? "bg-warning" : "bg-danger")"
+                                             role="progressbar"
+                                             style="width: @cls.AttendanceRate%"
+                                             aria-valuenow="@cls.AttendanceRate"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            @cls.AttendanceRate%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Workload -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-person-workspace"></i> Teacher Workload</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>Teacher</th>
+                            <th>Specialization</th>
+                            <th>Classes</th>
+                            <th>Students</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var teacher in Model.TeacherWorkloads)
+                        {
+                            <tr>
+                                <td><strong>@teacher.TeacherName</strong></td>
+                                <td><span class="badge bg-info">@teacher.Specialization</span></td>
+                                <td>@teacher.ClassCount</td>
+                                <td>@teacher.StudentCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Monthly Attendance Chart -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Monthly Attendance Trend</h5>
+    </div>
+    <div class="card-body">
+        <canvas id="attendanceChart" height="100"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [@Html.Raw(string.Join(",", Model.MonthlyAttendance.Select(m => $"'{m.Month}'")))],
+                datasets: [
+                    {
+                        label: 'Present',
+                        data: [@string.Join(",", Model.MonthlyAttendance.Select(m => m.Present))],
+                        backgroundColor: 'rgba(40, 167, 69, 0.8)',
+                        borderColor: 'rgba(40, 167, 69, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Absent',
+                        data: [@string.Join(",", Model.MonthlyAttendance.Select(m => m.Absent))],
+                        backgroundColor: 'rgba(220, 53, 69, 0.8)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Late',
+                        data: [@string.Join(",", Model.MonthlyAttendance.Select(m => m.Late))],
+                        backgroundColor: 'rgba(255, 193, 7, 0.8)',
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

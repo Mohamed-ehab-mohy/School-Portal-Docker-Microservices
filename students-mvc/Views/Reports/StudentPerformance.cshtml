@@ -1,0 +1,107 @@
+@model students_mvc.Controllers.StudentPerformanceReport
+
+@{
+    ViewData["Title"] = "Student Performance Report";
+    var students = ViewBag.Students as List<students_mvc.Models.Student>;
+}
+
+<div class="page-header">
+    <h1>Student Performance Report</h1>
+    <p>Analyze individual student performance</p>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="StudentPerformance" method="get" class="row g-3 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label">Select Student</label>
+                <select name="studentId" class="form-select">
+                    <option value="">-- Select Student --</option>
+                    @if (students is not null)
+                    {
+                        @foreach (var s in students)
+                        {
+                            <option value="@s.Id">@s.FullName (@s.Email)</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Generate Report
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Student is not null)
+{
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h3 class="text-success mb-0">@Model.PresentDays</h3>
+                    <p class="text-muted mb-0">Present Days</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <h3 class="text-danger mb-0">@Model.AbsentDays</h3>
+                    <p class="text-muted mb-0">Absent Days</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-body text-center">
+                    <h3 class="text-warning mb-0">@Model.LateDays</h3>
+                    <p class="text-muted mb-0">Late Days</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <h3 class="text-primary mb-0">@Model.AttendanceRate%</h3>
+                    <p class="text-muted mb-0">Attendance Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Student Information</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9"><strong>@Model.Student.FullName</strong></dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Student.Email</dd>
+
+                <dt class="col-sm-3">Classes</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Classes.Any())
+                    {
+                        @foreach (var cls in Model.Classes)
+                        {
+                            <span class="badge bg-primary me-1">@cls</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No classes assigned</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Total Attendance Records</dt>
+                <dd class="col-sm-9">@Model.TotalDays days</dd>
+            </dl>
+        </div>
+    </div>
+}
