@@ -46,6 +46,7 @@ services:
       - "5341:80"
     environment:
       ACCEPT_EULA: "Y"
+      SEQ_PASSWORD: Seq@123
     volumes:
       - seq-data:/var/opt/seq
     networks:

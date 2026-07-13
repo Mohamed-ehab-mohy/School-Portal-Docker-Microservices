@@ -61,8 +61,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 FirstName = firstNames[(i - 1) % firstNames.Length],
                 LastName = lastNames[(i - 1) % lastNames.Length],
                 Email = $"student{i:00}@school.com",
-                DateOfBirth = new DateTime(2000 + (i / 12), (i % 12) + 1, (i % 28) + 1),
-                EnrollmentDate = new DateTime(2024, 9, 1).AddDays(i - 1)
+                DateOfBirth = DateTime.SpecifyKind(new DateTime(2000 + (i / 12), (i % 12) + 1, (i % 28) + 1), DateTimeKind.Utc),
+                EnrollmentDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1).AddDays(i - 1), DateTimeKind.Utc)
             });
         }
 
@@ -70,11 +70,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var teachers = new[]
         {
-            new Teacher { Id = 1, FirstName = "Fatma", LastName = "Hassan", Email = "fatma.hassan@school.com", Specialization = "Mathematics", Phone = "01012345678", HireDate = new DateTime(2020, 9, 1) },
-            new Teacher { Id = 2, FirstName = "Mahmoud", LastName = "Ali", Email = "mahmoud.ali@school.com", Specialization = "Physics", Phone = "01098765432", HireDate = new DateTime(2019, 3, 15) },
-            new Teacher { Id = 3, FirstName = "Nour", LastName = "El-Din", Email = "nour.eldin@school.com", Specialization = "Arabic", Phone = "01155566677", HireDate = new DateTime(2021, 1, 10) },
-            new Teacher { Id = 4, FirstName = "Sara", LastName = "Mahmoud", Email = "sara.mahmoud@school.com", Specialization = "English", Phone = "01233344455", HireDate = new DateTime(2022, 8, 20) },
-            new Teacher { Id = 5, FirstName = "Khaled", LastName = "Nour", Email = "khaled.nour@school.com", Specialization = "Chemistry", Phone = "01077788899", HireDate = new DateTime(2018, 6, 1) },
+            new Teacher { Id = 1, FirstName = "Fatma", LastName = "Hassan", Email = "fatma.hassan@school.com", Specialization = "Mathematics", Phone = "01012345678", HireDate = DateTime.SpecifyKind(new DateTime(2020, 9, 1), DateTimeKind.Utc) },
+            new Teacher { Id = 2, FirstName = "Mahmoud", LastName = "Ali", Email = "mahmoud.ali@school.com", Specialization = "Physics", Phone = "01098765432", HireDate = DateTime.SpecifyKind(new DateTime(2019, 3, 15), DateTimeKind.Utc) },
+            new Teacher { Id = 3, FirstName = "Nour", LastName = "El-Din", Email = "nour.eldin@school.com", Specialization = "Arabic", Phone = "01155566677", HireDate = DateTime.SpecifyKind(new DateTime(2021, 1, 10), DateTimeKind.Utc) },
+            new Teacher { Id = 4, FirstName = "Sara", LastName = "Mahmoud", Email = "sara.mahmoud@school.com", Specialization = "English", Phone = "01233344455", HireDate = DateTime.SpecifyKind(new DateTime(2022, 8, 20), DateTimeKind.Utc) },
+            new Teacher { Id = 5, FirstName = "Khaled", LastName = "Nour", Email = "khaled.nour@school.com", Specialization = "Chemistry", Phone = "01077788899", HireDate = DateTime.SpecifyKind(new DateTime(2018, 6, 1), DateTimeKind.Utc) },
         };
 
         modelBuilder.Entity<Teacher>().HasData(teachers);
@@ -107,16 +107,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         var studentClasses = new[]
         {
-            new StudentClass { StudentId = 1, ClassRoomId = 1, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 2, ClassRoomId = 1, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 3, ClassRoomId = 2, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 4, ClassRoomId = 2, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 5, ClassRoomId = 3, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 6, ClassRoomId = 3, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 7, ClassRoomId = 4, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 8, ClassRoomId = 4, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 9, ClassRoomId = 5, AssignedDate = new DateTime(2024, 9, 1) },
-            new StudentClass { StudentId = 10, ClassRoomId = 5, AssignedDate = new DateTime(2024, 9, 1) },
+            new StudentClass { StudentId = 1, ClassRoomId = 1, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 2, ClassRoomId = 1, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 3, ClassRoomId = 2, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 4, ClassRoomId = 2, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 5, ClassRoomId = 3, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 6, ClassRoomId = 3, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 7, ClassRoomId = 4, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 8, ClassRoomId = 4, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 9, ClassRoomId = 5, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
+            new StudentClass { StudentId = 10, ClassRoomId = 5, AssignedDate = DateTime.SpecifyKind(new DateTime(2024, 9, 1), DateTimeKind.Utc) },
         };
 
         modelBuilder.Entity<StudentClass>().HasData(studentClasses);

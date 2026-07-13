@@ -62,10 +62,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         var selectedIds = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.SelectedTeacherIds ?? new int[0]));
         var select = document.querySelector('select[name="teacherIds"]');

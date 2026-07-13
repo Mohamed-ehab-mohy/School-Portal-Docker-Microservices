@@ -22,6 +22,212 @@ namespace grades_mvc.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("grades_mvc.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("grades_mvc.Models.Grade", b =>
                 {
                     b.Property<int>("Id")
@@ -58,7 +264,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 1,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 83m,
                             StudentId = 1
                         },
@@ -66,7 +272,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 2,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 57m,
                             StudentId = 2
                         },
@@ -74,7 +280,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 3,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 56m,
                             StudentId = 3
                         },
@@ -82,7 +288,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 4,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 76m,
                             StudentId = 4
                         },
@@ -90,7 +296,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 5,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 58m,
                             StudentId = 5
                         },
@@ -98,7 +304,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 6,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 63m,
                             StudentId = 6
                         },
@@ -106,7 +312,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 7,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 86m,
                             StudentId = 7
                         },
@@ -114,7 +320,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 8,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 75m,
                             StudentId = 8
                         },
@@ -122,7 +328,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 9,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 58m,
                             StudentId = 9
                         },
@@ -130,7 +336,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 10,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 88m,
                             StudentId = 10
                         },
@@ -138,7 +344,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 11,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 61m,
                             StudentId = 11
                         },
@@ -146,7 +352,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 12,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 62m,
                             StudentId = 12
                         },
@@ -154,7 +360,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 13,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 75m,
                             StudentId = 13
                         },
@@ -162,7 +368,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 14,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 66m,
                             StudentId = 14
                         },
@@ -170,7 +376,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 15,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 69m,
                             StudentId = 15
                         },
@@ -178,7 +384,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 16,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 63m,
                             StudentId = 16
                         },
@@ -186,7 +392,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 17,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 75m,
                             StudentId = 17
                         },
@@ -194,7 +400,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 18,
                             CourseName = "English",
-                            GradeDate = new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 51m,
                             StudentId = 18
                         },
@@ -202,7 +408,7 @@ namespace grades_mvc.Migrations
                         {
                             Id = 19,
                             CourseName = "Mathematics",
-                            GradeDate = new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 90m,
                             StudentId = 19
                         },
@@ -210,10 +416,98 @@ namespace grades_mvc.Migrations
                         {
                             Id = 20,
                             CourseName = "Science",
-                            GradeDate = new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            GradeDate = new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             Score = 78m,
                             StudentId = 20
                         });
+                });
+
+            modelBuilder.Entity("grades_mvc.Models.StudentCache", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentCache");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

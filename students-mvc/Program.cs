@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Serilog;
 using students_mvc.Data;
 using students_mvc.Messaging;
 using students_mvc.Models;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()

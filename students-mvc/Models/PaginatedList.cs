@@ -2,7 +2,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace students_mvc.Models;
 
-public class PaginatedList<T> : List<T>
+public interface IPaginatedList
+{
+    int PageIndex { get; }
+    int TotalPages { get; }
+    int TotalCount { get; }
+    string? SearchTerm { get; }
+    bool HasPreviousPage { get; }
+    bool HasNextPage { get; }
+}
+
+public class PaginatedList<T> : List<T>, IPaginatedList
 {
     public int PageIndex { get; private set; }
     public int TotalPages { get; private set; }

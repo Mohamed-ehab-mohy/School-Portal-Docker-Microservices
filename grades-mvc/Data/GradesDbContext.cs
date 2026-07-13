@@ -34,7 +34,7 @@ public class GradesDbContext : IdentityDbContext<ApplicationUser>
                 StudentId = i,
                 CourseName = subjects[(i - 1) % subjects.Length],
                 Score = random.Next(50, 100),
-                GradeDate = new DateTime(2025, 9, 1).AddDays(i - 1)
+                GradeDate = DateTime.SpecifyKind(new DateTime(2025, 9, 1).AddDays(i - 1), DateTimeKind.Utc)
             });
         }
 

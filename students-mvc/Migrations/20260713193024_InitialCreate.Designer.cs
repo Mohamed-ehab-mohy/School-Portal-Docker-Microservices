@@ -12,8 +12,8 @@ using students_mvc.Data;
 namespace students_mvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260713192041_AddNotificationsTable")]
-    partial class AddNotificationsTable
+    [Migration("20260713193024_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -488,180 +488,180 @@ namespace students_mvc.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfBirth = new DateTime(2000, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student01@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Ahmed",
                             LastName = "Ali"
                         },
                         new
                         {
                             Id = 2,
-                            DateOfBirth = new DateTime(2000, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 3, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student02@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Mohamed",
                             LastName = "Hassan"
                         },
                         new
                         {
                             Id = 3,
-                            DateOfBirth = new DateTime(2000, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 4, 4, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student03@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Ali",
                             LastName = "Ibrahim"
                         },
                         new
                         {
                             Id = 4,
-                            DateOfBirth = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student04@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Omar",
                             LastName = "Saleh"
                         },
                         new
                         {
                             Id = 5,
-                            DateOfBirth = new DateTime(2000, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 6, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student05@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Khaled",
                             LastName = "Nour"
                         },
                         new
                         {
                             Id = 6,
-                            DateOfBirth = new DateTime(2000, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 7, 7, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student06@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Youssef",
                             LastName = "Adel"
                         },
                         new
                         {
                             Id = 7,
-                            DateOfBirth = new DateTime(2000, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 8, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student07@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Hassan",
                             LastName = "Karim"
                         },
                         new
                         {
                             Id = 8,
-                            DateOfBirth = new DateTime(2000, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 9, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student08@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Mahmoud",
                             LastName = "Fahmy"
                         },
                         new
                         {
                             Id = 9,
-                            DateOfBirth = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student09@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Tarek",
                             LastName = "Saeed"
                         },
                         new
                         {
                             Id = 10,
-                            DateOfBirth = new DateTime(2000, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 11, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student10@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Sami",
                             LastName = "Mansour"
                         },
                         new
                         {
                             Id = 11,
-                            DateOfBirth = new DateTime(2000, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2000, 12, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student11@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Ahmed",
                             LastName = "Ali"
                         },
                         new
                         {
                             Id = 12,
-                            DateOfBirth = new DateTime(2001, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 1, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student12@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Mohamed",
                             LastName = "Hassan"
                         },
                         new
                         {
                             Id = 13,
-                            DateOfBirth = new DateTime(2001, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 2, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student13@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Ali",
                             LastName = "Ibrahim"
                         },
                         new
                         {
                             Id = 14,
-                            DateOfBirth = new DateTime(2001, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 3, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student14@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Omar",
                             LastName = "Saleh"
                         },
                         new
                         {
                             Id = 15,
-                            DateOfBirth = new DateTime(2001, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 4, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student15@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Khaled",
                             LastName = "Nour"
                         },
                         new
                         {
                             Id = 16,
-                            DateOfBirth = new DateTime(2001, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 5, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student16@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Youssef",
                             LastName = "Adel"
                         },
                         new
                         {
                             Id = 17,
-                            DateOfBirth = new DateTime(2001, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student17@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Hassan",
                             LastName = "Karim"
                         },
                         new
                         {
                             Id = 18,
-                            DateOfBirth = new DateTime(2001, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 7, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student18@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Mahmoud",
                             LastName = "Fahmy"
                         },
                         new
                         {
                             Id = 19,
-                            DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student19@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Tarek",
                             LastName = "Saeed"
                         },
                         new
                         {
                             Id = 20,
-                            DateOfBirth = new DateTime(2001, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2001, 9, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "student20@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnrollmentDate = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             FirstName = "Sami",
                             LastName = "Mansour"
                         });
@@ -689,61 +689,61 @@ namespace students_mvc.Migrations
                         {
                             StudentId = 1,
                             ClassRoomId = 1,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 2,
                             ClassRoomId = 1,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 3,
                             ClassRoomId = 2,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 4,
                             ClassRoomId = 2,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 5,
                             ClassRoomId = 3,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 6,
                             ClassRoomId = 3,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 7,
                             ClassRoomId = 4,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 8,
                             ClassRoomId = 4,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 9,
                             ClassRoomId = 5,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             StudentId = 10,
                             ClassRoomId = 5,
-                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            AssignedDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -793,7 +793,7 @@ namespace students_mvc.Migrations
                             Id = 1,
                             Email = "fatma.hassan@school.com",
                             FirstName = "Fatma",
-                            HireDate = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HireDate = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Hassan",
                             Phone = "01012345678",
                             Specialization = "Mathematics"
@@ -803,7 +803,7 @@ namespace students_mvc.Migrations
                             Id = 2,
                             Email = "mahmoud.ali@school.com",
                             FirstName = "Mahmoud",
-                            HireDate = new DateTime(2019, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HireDate = new DateTime(2019, 3, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Ali",
                             Phone = "01098765432",
                             Specialization = "Physics"
@@ -813,7 +813,7 @@ namespace students_mvc.Migrations
                             Id = 3,
                             Email = "nour.eldin@school.com",
                             FirstName = "Nour",
-                            HireDate = new DateTime(2021, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HireDate = new DateTime(2021, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "El-Din",
                             Phone = "01155566677",
                             Specialization = "Arabic"
@@ -823,7 +823,7 @@ namespace students_mvc.Migrations
                             Id = 4,
                             Email = "sara.mahmoud@school.com",
                             FirstName = "Sara",
-                            HireDate = new DateTime(2022, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HireDate = new DateTime(2022, 8, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Mahmoud",
                             Phone = "01233344455",
                             Specialization = "English"
@@ -833,7 +833,7 @@ namespace students_mvc.Migrations
                             Id = 5,
                             Email = "khaled.nour@school.com",
                             FirstName = "Khaled",
-                            HireDate = new DateTime(2018, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HireDate = new DateTime(2018, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "Nour",
                             Phone = "01077788899",
                             Specialization = "Chemistry"

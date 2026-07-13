@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace students_mvc.Migrations
+namespace grades_mvc.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -56,7 +56,24 @@ namespace students_mvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StudentId = table.Column<int>(type: "integer", nullable: false),
+                    CourseName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Score = table.Column<decimal>(type: "numeric(5,2)", precision: 5, scale: 2, nullable: false),
+                    GradeDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Notes = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentCache",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -65,11 +82,12 @@ namespace students_mvc.Migrations
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EnrollmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    EnrollmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_StudentCache", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,30 +197,30 @@ namespace students_mvc.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Students",
-                columns: new[] { "Id", "DateOfBirth", "Email", "EnrollmentDate", "FirstName", "LastName" },
+                table: "Grades",
+                columns: new[] { "Id", "CourseName", "GradeDate", "Notes", "Score", "StudentId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2000, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "student01@school.com", new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ahmed", "Ali" },
-                    { 2, new DateTime(2000, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "student02@school.com", new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mohamed", "Hassan" },
-                    { 3, new DateTime(2000, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "student03@school.com", new DateTime(2024, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ali", "Ibrahim" },
-                    { 4, new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "student04@school.com", new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Omar", "Saleh" },
-                    { 5, new DateTime(2000, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "student05@school.com", new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Khaled", "Nour" },
-                    { 6, new DateTime(2000, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "student06@school.com", new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "Youssef", "Adel" },
-                    { 7, new DateTime(2000, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "student07@school.com", new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hassan", "Karim" },
-                    { 8, new DateTime(2000, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "student08@school.com", new DateTime(2024, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mahmoud", "Fahmy" },
-                    { 9, new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "student09@school.com", new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tarek", "Saeed" },
-                    { 10, new DateTime(2000, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "student10@school.com", new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sami", "Mansour" },
-                    { 11, new DateTime(2000, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "student11@school.com", new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ahmed", "Ali" },
-                    { 12, new DateTime(2001, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "student12@school.com", new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mohamed", "Hassan" },
-                    { 13, new DateTime(2001, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "student13@school.com", new DateTime(2024, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ali", "Ibrahim" },
-                    { 14, new DateTime(2001, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "student14@school.com", new DateTime(2024, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "Omar", "Saleh" },
-                    { 15, new DateTime(2001, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "student15@school.com", new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Khaled", "Nour" },
-                    { 16, new DateTime(2001, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "student16@school.com", new DateTime(2024, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Youssef", "Adel" },
-                    { 17, new DateTime(2001, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "student17@school.com", new DateTime(2024, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hassan", "Karim" },
-                    { 18, new DateTime(2001, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "student18@school.com", new DateTime(2024, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mahmoud", "Fahmy" },
-                    { 19, new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "student19@school.com", new DateTime(2024, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tarek", "Saeed" },
-                    { 20, new DateTime(2001, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "student20@school.com", new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sami", "Mansour" }
+                    { 1, "Mathematics", new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, 83m, 1 },
+                    { 2, "Science", new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc), null, 57m, 2 },
+                    { 3, "English", new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Utc), null, 56m, 3 },
+                    { 4, "Mathematics", new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Utc), null, 76m, 4 },
+                    { 5, "Science", new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Utc), null, 58m, 5 },
+                    { 6, "English", new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc), null, 63m, 6 },
+                    { 7, "Mathematics", new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Utc), null, 86m, 7 },
+                    { 8, "Science", new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Utc), null, 75m, 8 },
+                    { 9, "English", new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Utc), null, 58m, 9 },
+                    { 10, "Mathematics", new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc), null, 88m, 10 },
+                    { 11, "Science", new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc), null, 61m, 11 },
+                    { 12, "English", new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc), null, 62m, 12 },
+                    { 13, "Mathematics", new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Utc), null, 75m, 13 },
+                    { 14, "Science", new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Utc), null, 66m, 14 },
+                    { 15, "English", new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc), null, 69m, 15 },
+                    { 16, "Mathematics", new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Utc), null, 63m, 16 },
+                    { 17, "Science", new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Utc), null, 75m, 17 },
+                    { 18, "English", new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Utc), null, 51m, 18 },
+                    { 19, "Mathematics", new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Utc), null, 90m, 19 },
+                    { 20, "Science", new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Utc), null, 78m, 20 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -241,12 +259,6 @@ namespace students_mvc.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_Email",
-                table: "Students",
-                column: "Email",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -268,7 +280,10 @@ namespace students_mvc.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "StudentCache");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

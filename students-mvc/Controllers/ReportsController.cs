@@ -61,8 +61,8 @@ public class ReportsController(ApplicationDbContext context) : Controller
 
     public async Task<IActionResult> AttendanceReport(DateTime? startDate, DateTime? endDate, int? classId)
     {
-        var start = startDate ?? DateTime.Today.AddDays(-30);
-        var end = endDate ?? DateTime.Today;
+        var start = startDate ?? DateTime.UtcNow.Date.AddDays(-30);
+        var end = endDate ?? DateTime.UtcNow.Date;
 
         var query = context.Attendances
             .Include(a => a.Student)
@@ -118,8 +118,8 @@ public class ReportsController(ApplicationDbContext context) : Controller
                 .ThenInclude(ct => ct.Teacher)
             .ToListAsync();
 
-        var today = DateTime.Today;
-        var startOfMonth = new DateTime(today.Year, today.Month, 1);
+        var today = DateTime.UtcNow.Date;
+        var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
         var monthlyAttendance = await context.Attendances
             .Where(a => a.Date >= startOfMonth)

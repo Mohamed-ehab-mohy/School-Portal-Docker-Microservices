@@ -12,8 +12,8 @@ public class DashboardController(
 {
     public async Task<IActionResult> Index()
     {
-        var today = DateTime.Today;
-        var startOfMonth = new DateTime(today.Year, today.Month, 1);
+        var today = DateTime.UtcNow.Date;
+        var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
         var totalStudents = await context.Students.CountAsync();
         var totalTeachers = await context.Teachers.CountAsync();

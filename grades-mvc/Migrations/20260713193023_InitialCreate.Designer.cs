@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using students_mvc.Data;
+using grades_mvc.Data;
 
 #nullable disable
 
-namespace students_mvc.Migrations
+namespace grades_mvc.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260713145639_InitialCreate")]
+    [DbContext(typeof(GradesDbContext))]
+    [Migration("20260713193023_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -157,7 +157,7 @@ namespace students_mvc.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("students_mvc.Models.ApplicationUser", b =>
+            modelBuilder.Entity("grades_mvc.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -231,7 +231,201 @@ namespace students_mvc.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("students_mvc.Models.Student", b =>
+            modelBuilder.Entity("grades_mvc.Models.Grade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("GradeDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<decimal>("Score")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Grades");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 83m,
+                            StudentId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 57m,
+                            StudentId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 56m,
+                            StudentId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 76m,
+                            StudentId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 58m,
+                            StudentId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 63m,
+                            StudentId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 7, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 86m,
+                            StudentId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 75m,
+                            StudentId = 8
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 9, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 58m,
+                            StudentId = 9
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 10, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 88m,
+                            StudentId = 10
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 61m,
+                            StudentId = 11
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 62m,
+                            StudentId = 12
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 13, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 75m,
+                            StudentId = 13
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 14, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 66m,
+                            StudentId = 14
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 69m,
+                            StudentId = 15
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 16, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 63m,
+                            StudentId = 16
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 17, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 75m,
+                            StudentId = 17
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CourseName = "English",
+                            GradeDate = new DateTime(2025, 9, 18, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 51m,
+                            StudentId = 18
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CourseName = "Mathematics",
+                            GradeDate = new DateTime(2025, 9, 19, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 90m,
+                            StudentId = 19
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CourseName = "Science",
+                            GradeDate = new DateTime(2025, 9, 20, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Score = 78m,
+                            StudentId = 20
+                        });
+                });
+
+            modelBuilder.Entity("grades_mvc.Models.StudentCache", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,194 +454,12 @@ namespace students_mvc.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateOfBirth = new DateTime(2000, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student01@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Ahmed",
-                            LastName = "Ali"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(2000, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student02@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Mohamed",
-                            LastName = "Hassan"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateOfBirth = new DateTime(2000, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student03@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Ali",
-                            LastName = "Ibrahim"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DateOfBirth = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student04@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Omar",
-                            LastName = "Saleh"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DateOfBirth = new DateTime(2000, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student05@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Khaled",
-                            LastName = "Nour"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DateOfBirth = new DateTime(2000, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student06@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Youssef",
-                            LastName = "Adel"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DateOfBirth = new DateTime(2000, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student07@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Hassan",
-                            LastName = "Karim"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            DateOfBirth = new DateTime(2000, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student08@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Mahmoud",
-                            LastName = "Fahmy"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            DateOfBirth = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student09@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Tarek",
-                            LastName = "Saeed"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            DateOfBirth = new DateTime(2000, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student10@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Sami",
-                            LastName = "Mansour"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            DateOfBirth = new DateTime(2000, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student11@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Ahmed",
-                            LastName = "Ali"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            DateOfBirth = new DateTime(2001, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student12@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Mohamed",
-                            LastName = "Hassan"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            DateOfBirth = new DateTime(2001, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student13@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Ali",
-                            LastName = "Ibrahim"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            DateOfBirth = new DateTime(2001, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student14@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Omar",
-                            LastName = "Saleh"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            DateOfBirth = new DateTime(2001, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student15@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Khaled",
-                            LastName = "Nour"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            DateOfBirth = new DateTime(2001, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student16@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Youssef",
-                            LastName = "Adel"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            DateOfBirth = new DateTime(2001, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student17@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Hassan",
-                            LastName = "Karim"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            DateOfBirth = new DateTime(2001, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student18@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Mahmoud",
-                            LastName = "Fahmy"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student19@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Tarek",
-                            LastName = "Saeed"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            DateOfBirth = new DateTime(2001, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "student20@school.com",
-                            EnrollmentDate = new DateTime(2024, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Sami",
-                            LastName = "Mansour"
-                        });
+                    b.ToTable("StudentCache");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -461,7 +473,7 @@ namespace students_mvc.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("students_mvc.Models.ApplicationUser", null)
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +482,7 @@ namespace students_mvc.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("students_mvc.Models.ApplicationUser", null)
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,7 +497,7 @@ namespace students_mvc.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("students_mvc.Models.ApplicationUser", null)
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,7 +506,7 @@ namespace students_mvc.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("students_mvc.Models.ApplicationUser", null)
+                    b.HasOne("grades_mvc.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

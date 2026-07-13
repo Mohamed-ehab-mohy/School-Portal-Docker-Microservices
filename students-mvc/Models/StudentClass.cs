@@ -8,5 +8,5 @@ public class StudentClass
     public int ClassRoomId { get; set; }
     public ClassRoom ClassRoom { get; set; } = null!;
 
-    public DateTime AssignedDate { get; set; } = DateTime.Today;
+    public DateTime AssignedDate { get; set; } = DateTime.UtcNow.Date;
 }

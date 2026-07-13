@@ -50,7 +50,7 @@ public class GradesController(
     public async Task<IActionResult> Create()
     {
         await PopulateStudentDropdownAsync();
-        return View(new GradeFormViewModel { GradeDate = DateTime.Today });
+        return View(new GradeFormViewModel { GradeDate = DateTime.UtcNow.Date });
     }
 
     [HttpPost]

@@ -24,7 +24,7 @@ public class Attendance
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime Date { get; set; } = DateTime.Today;
+    public DateTime Date { get; set; } = DateTime.UtcNow.Date;
 
     [Required]
     public AttendanceStatus Status { get; set; } = AttendanceStatus.Present;
