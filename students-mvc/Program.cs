@@ -21,6 +21,7 @@ builder.Host.UseSerilog();
 
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection("RabbitMQ"));
 builder.Services.AddSingleton<IStudentMessageBus, RabbitMqStudentMessageBus>();
+builder.Services.AddScoped<students_mvc.Services.INotificationService, students_mvc.Services.NotificationService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
@@ -92,6 +93,53 @@ using (var scope = app.Services.CreateScope())
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+    }
+
+    if (!context.Notifications.Any())
+    {
+        context.Notifications.AddRange(
+            new Notification
+            {
+                Title = "Welcome to School Portal",
+                Message = "The notification system is now active. You will receive real-time updates for student, teacher, and attendance events.",
+                Type = NotificationType.Info,
+                Category = NotificationCategory.System,
+                IconClass = "bi-bell-fill"
+            },
+            new Notification
+            {
+                Title = "New School Year Started",
+                Message = "The 2025-2026 academic year has officially begun. All classes are now active.",
+                Type = NotificationType.Success,
+                Category = NotificationCategory.System,
+                IconClass = "bi-calendar-check"
+            },
+            new Notification
+            {
+                Title = "System Update",
+                Message = "Dashboard analytics and report generation features are now available for administrators.",
+                Type = NotificationType.Info,
+                Category = NotificationCategory.System,
+                IconClass = "bi-gear-fill"
+            },
+            new Notification
+            {
+                Title = "Attendance Tracking Active",
+                Message = "Daily attendance tracking is now enabled. Teachers can submit attendance from the Attendance page.",
+                Type = NotificationType.Info,
+                Category = NotificationCategory.Attendance,
+                IconClass = "bi-clipboard-check"
+            },
+            new Notification
+            {
+                Title = "Grades Management Online",
+                Message = "The grades management system is operational. Teachers can now enter and manage student grades.",
+                Type = NotificationType.Success,
+                Category = NotificationCategory.Grade,
+                IconClass = "bi-journal-text"
+            }
+        );
+        await context.SaveChangesAsync();
     }
 }
 

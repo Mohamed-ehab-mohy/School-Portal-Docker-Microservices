@@ -1113,3 +1113,44 @@ a:hover {
     color: #10b981;
     flex-shrink: 0;
 }
+
+/* ===== Notifications ===== */
+.notif-dropdown {
+    animation: notifSlideIn 0.2s ease-out;
+}
+
+@keyframes notifSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.notif-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.notif-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-school .nav-link .badge.rounded-pill {
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: translate(-50%, 0) scale(1); }
+    50% { transform: translate(-50%, 0) scale(1.1); }
+}
+
+.notif-icon {
+    transition: transform 0.2s ease;
+}
+
+.notif-card:hover .notif-icon {
+    transform: scale(1.1);
+}
+
+/* Unread notification glow */
+.notif-card[style*="font-weight:600"] {
+    border-left: 3px solid var(--primary);
+}

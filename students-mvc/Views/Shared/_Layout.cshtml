@@ -88,6 +88,7 @@
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            @await Html.PartialAsync("_NotificationBell")
                             <li class="nav-item">
                                 <span class="nav-link text-light" style="opacity:0.9;">
                                     <i class="bi bi-person-circle"></i> @User.Identity.Name

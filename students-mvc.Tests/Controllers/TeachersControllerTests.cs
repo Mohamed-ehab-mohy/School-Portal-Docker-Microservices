@@ -1,20 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using students_mvc.Controllers;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Tests.Controllers;
 
 public class TeachersControllerTests : IDisposable
 {
     private readonly Data.ApplicationDbContext _context;
+    private readonly Mock<INotificationService> _notificationServiceMock;
     private readonly TeachersController _controller;
 
     public TeachersControllerTests()
     {
         _context = TestDbHelper.CreateInMemoryContext(Guid.NewGuid().ToString());
         TestDbHelper.SeedTestData(_context);
-        _controller = new TeachersController(_context);
+        _notificationServiceMock = new Mock<INotificationService>();
+        _controller = new TeachersController(_context, _notificationServiceMock.Object);
     }
 
     public void Dispose()

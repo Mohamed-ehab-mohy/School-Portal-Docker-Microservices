@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using students_mvc.Data;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Controllers;
 
 [Authorize]
-public class AttendanceController(ApplicationDbContext context) : Controller
+public class AttendanceController(ApplicationDbContext context, INotificationService notificationService) : Controller
 {
     public async Task<IActionResult> Index(int? classId, DateTime? date, string? search, int page = 1)
     {
@@ -139,6 +140,38 @@ public class AttendanceController(ApplicationDbContext context) : Controller
             }
 
             await context.SaveChangesAsync();
+
+            var absentCount = entries.Count(e => e.Status == AttendanceStatus.Absent);
+            var lateCount = entries.Count(e => e.Status == AttendanceStatus.Late);
+            var className = (await context.ClassRooms.FindAsync(classId))?.Name ?? "Unknown";
+            var dateStr = date.ToString("MMM dd, yyyy");
+
+            if (absentCount > 0)
+            {
+                await notificationService.CreateAsync(
+                    "Absences Recorded",
+                    $"{absentCount} student{(absentCount > 1 ? "s" : "")} marked absent in {className} on {dateStr}.",
+                    NotificationType.Warning, NotificationCategory.Attendance,
+                    $"/Attendance?classId={classId}&date={date:yyyy-MM-dd}");
+            }
+
+            if (lateCount > 0)
+            {
+                await notificationService.CreateAsync(
+                    "Late Arrivals Recorded",
+                    $"{lateCount} student{(lateCount > 1 ? "s" : "")} marked late in {className} on {dateStr}.",
+                    NotificationType.Info, NotificationCategory.Attendance,
+                    $"/Attendance?classId={classId}&date={date:yyyy-MM-dd}");
+            }
+
+            if (absentCount == 0 && lateCount == 0)
+            {
+                await notificationService.CreateAsync(
+                    "Attendance Completed",
+                    $"All {entries.Count} students present in {className} on {dateStr}.",
+                    NotificationType.Success, NotificationCategory.Attendance,
+                    $"/Attendance?classId={classId}&date={date:yyyy-MM-dd}");
+            }
         }
 
         return RedirectToAction(nameof(Index), new { classId, date = date.ToString("yyyy-MM-dd") });

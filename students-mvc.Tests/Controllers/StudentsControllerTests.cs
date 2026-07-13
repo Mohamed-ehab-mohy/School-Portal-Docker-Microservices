@@ -3,6 +3,7 @@ using Moq;
 using students_mvc.Controllers;
 using students_mvc.Messaging;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Tests.Controllers;
 
@@ -10,6 +11,7 @@ public class StudentsControllerTests : IDisposable
 {
     private readonly Data.ApplicationDbContext _context;
     private readonly Mock<IStudentMessageBus> _messageBusMock;
+    private readonly Mock<INotificationService> _notificationServiceMock;
     private readonly StudentsController _controller;
 
     public StudentsControllerTests()
@@ -17,7 +19,8 @@ public class StudentsControllerTests : IDisposable
         _context = TestDbHelper.CreateInMemoryContext(Guid.NewGuid().ToString());
         TestDbHelper.SeedTestData(_context);
         _messageBusMock = new Mock<IStudentMessageBus>();
-        _controller = new StudentsController(_context, _messageBusMock.Object);
+        _notificationServiceMock = new Mock<INotificationService>();
+        _controller = new StudentsController(_context, _messageBusMock.Object, _notificationServiceMock.Object);
     }
 
     public void Dispose()

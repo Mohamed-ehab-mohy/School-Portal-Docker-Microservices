@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using students_mvc.Controllers;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Tests.Controllers;
 
 public class AttendanceControllerTests : IDisposable
 {
     private readonly Data.ApplicationDbContext _context;
+    private readonly Mock<INotificationService> _notificationServiceMock;
     private readonly AttendanceController _controller;
 
     public AttendanceControllerTests()
@@ -15,7 +18,8 @@ public class AttendanceControllerTests : IDisposable
         _context = TestDbHelper.CreateInMemoryContext(Guid.NewGuid().ToString());
         TestDbHelper.SeedTestData(_context);
         SeedAttendanceData();
-        _controller = new AttendanceController(_context);
+        _notificationServiceMock = new Mock<INotificationService>();
+        _controller = new AttendanceController(_context, _notificationServiceMock.Object);
     }
 
     private void SeedAttendanceData()

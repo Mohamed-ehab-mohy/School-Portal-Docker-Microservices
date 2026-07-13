@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using students_mvc.Data;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Controllers;
 
 [Authorize]
-public class TeachersController(ApplicationDbContext context) : Controller
+public class TeachersController(ApplicationDbContext context, INotificationService notificationService) : Controller
 {
     public async Task<IActionResult> Index(string? search, int page = 1)
     {
@@ -62,6 +63,11 @@ public class TeachersController(ApplicationDbContext context) : Controller
         {
             context.Add(teacher);
             await context.SaveChangesAsync();
+            await notificationService.CreateAsync(
+                "New Teacher Added",
+                $"{teacher.FullName} ({teacher.Specialization}) has been added to the faculty.",
+                NotificationType.Success, NotificationCategory.Teacher,
+                $"/Teachers/Details/{teacher.Id}");
             return RedirectToAction(nameof(Index));
         }
 
@@ -101,6 +107,11 @@ public class TeachersController(ApplicationDbContext context) : Controller
             {
                 context.Update(teacher);
                 await context.SaveChangesAsync();
+                await notificationService.CreateAsync(
+                    "Teacher Updated",
+                    $"{teacher.FullName}'s information has been updated.",
+                    NotificationType.Info, NotificationCategory.Teacher,
+                    $"/Teachers/Details/{teacher.Id}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -147,6 +158,10 @@ public class TeachersController(ApplicationDbContext context) : Controller
         {
             context.Teachers.Remove(teacher);
             await context.SaveChangesAsync();
+            await notificationService.CreateAsync(
+                "Teacher Removed",
+                $"{teacher.FullName} has been removed from the faculty.",
+                NotificationType.Warning, NotificationCategory.Teacher);
         }
 
         return RedirectToAction(nameof(Index));

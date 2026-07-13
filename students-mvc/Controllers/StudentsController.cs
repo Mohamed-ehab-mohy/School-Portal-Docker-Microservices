@@ -5,13 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using students_mvc.Data;
 using students_mvc.Messaging;
 using students_mvc.Models;
+using students_mvc.Services;
 
 namespace students_mvc.Controllers;
 
 [Authorize]
 public class StudentsController(
     ApplicationDbContext context,
-    IStudentMessageBus messageBus) : Controller
+    IStudentMessageBus messageBus,
+    INotificationService notificationService) : Controller
 {
     [HttpGet("api/students")]
     [Authorize(Roles = "Admin,Teacher")]
@@ -93,6 +95,11 @@ public class StudentsController(
             context.Add(student);
             await context.SaveChangesAsync();
             await messageBus.PublishStudentEvent(student, StudentEventTypes.Created);
+            await notificationService.CreateAsync(
+                "New Student Enrolled",
+                $"{student.FullName} has been enrolled in the system.",
+                NotificationType.Success, NotificationCategory.Student,
+                $"/Students/Details/{student.Id}");
             return RedirectToAction(nameof(Index));
         }
 
@@ -133,6 +140,11 @@ public class StudentsController(
                 context.Update(student);
                 await context.SaveChangesAsync();
                 await messageBus.PublishStudentEvent(student, StudentEventTypes.Updated);
+                await notificationService.CreateAsync(
+                    "Student Updated",
+                    $"{student.FullName}'s information has been updated.",
+                    NotificationType.Info, NotificationCategory.Student,
+                    $"/Students/Details/{student.Id}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -178,6 +190,10 @@ public class StudentsController(
         if (student is not null)
         {
             await messageBus.PublishStudentEvent(student, StudentEventTypes.Deleted);
+            await notificationService.CreateAsync(
+                "Student Removed",
+                $"{student.FullName} has been removed from the system.",
+                NotificationType.Warning, NotificationCategory.Student);
             context.Students.Remove(student);
             await context.SaveChangesAsync();
         }
