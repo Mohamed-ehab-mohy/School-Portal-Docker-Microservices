@@ -5,12 +5,11 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: school_portal
+      POSTGRES_DB: defaultdb
     ports:
       - "5432:5432"
     volumes:
       - school-portal-data:/var/lib/postgresql/data
-      - ./postgres/init:/docker-entrypoint-initdb.d
     networks:
       - school-network
     healthcheck:
@@ -28,7 +27,7 @@ services:
     ports:
       - "5001:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=students_db;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=defaultdb;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - AdminPassword=${ADMIN_PASSWORD:-Admin@123}
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
@@ -45,7 +44,7 @@ services:
     ports:
       - "5002:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=grades_db;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=defaultdb;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - StudentsService__BaseUrl=http://students-mvc:8080
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
