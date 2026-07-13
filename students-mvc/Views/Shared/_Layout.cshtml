@@ -45,6 +45,16 @@
                                 </li>
                             }
                             <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Teachers" ? "active" : "")" asp-area="" asp-controller="Teachers" asp-action="Index">
+                                    <i class="bi bi-person-badge"></i> Teachers
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "ClassRooms" ? "active" : "")" asp-area="" asp-controller="ClassRooms" asp-action="Index">
+                                    <i class="bi bi-building"></i> Classes
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="@gradesUrl/Grades">
                                     <i class="bi bi-journal-text"></i> Grades
                                 </a>

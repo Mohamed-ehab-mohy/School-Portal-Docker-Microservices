@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace students_mvc.Models;
 
-[Index(nameof(Email), IsUnique = true)]
-public class Student
+public class Teacher
 {
     public int Id { get; set; }
 
@@ -22,14 +20,19 @@ public class Student
     public string Email { get; set; } = string.Empty;
 
     [Required]
-    [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; }
+    [StringLength(100)]
+    public string Specialization { get; set; } = string.Empty;
+
+    [Required]
+    [Phone]
+    [StringLength(20)]
+    public string Phone { get; set; } = string.Empty;
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime EnrollmentDate { get; set; }
+    public DateTime HireDate { get; set; }
 
-    public ICollection<StudentClass> StudentClasses { get; set; } = new List<StudentClass>();
+    public ICollection<ClassTeacher> ClassTeachers { get; set; } = new List<ClassTeacher>();
 
     public string FullName => $"{FirstName} {LastName}";
 }

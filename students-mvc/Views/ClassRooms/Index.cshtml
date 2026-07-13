@@ -1,0 +1,96 @@
+@model IEnumerable<students_mvc.Models.ClassRoom>
+
+@{
+    ViewData["Title"] = "Classes";
+    var hasRecords = Model.Any();
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Classes</h1>
+        <p>Manage school classes and their assignments</p>
+    </div>
+    @if (isAdmin)
+    {
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Class
+            </a>
+        </div>
+    }
+</div>
+
+@if (hasRecords)
+{
+    <div class="table-container">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Class Name</th>
+                    <th>Grade</th>
+                    <th>Room</th>
+                    <th>Capacity</th>
+                    <th>Teachers</th>
+                    <th>Students</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td><strong>@item.Name</strong></td>
+                    <td><span class="badge bg-primary">@item.Grade</span></td>
+                    <td>@item.RoomNumber</td>
+                    <td>@item.StudentClasses.Count / @item.Capacity</td>
+                    <td>
+                        @foreach (var ct in item.ClassTeachers)
+                        {
+                            <span class="badge bg-info">@ct.Teacher.FullName</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="badge bg-success">@item.StudentClasses.Count students</span>
+                    </td>
+                    <td class="text-end text-nowrap">
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-building"></i>
+            </div>
+            <h5>No classes yet</h5>
+            <p>Get started by adding your first class to the system.</p>
+            @if (isAdmin)
+            {
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i> Add New Class
+                </a>
+            }
+        </div>
+    </div>
+}

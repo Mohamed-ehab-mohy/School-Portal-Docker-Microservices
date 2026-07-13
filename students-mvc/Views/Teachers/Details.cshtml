@@ -1,0 +1,42 @@
+@model students_mvc.Models.Teacher
+
+@{
+    ViewData["Title"] = "Teacher Details";
+}
+
+<div class="page-header">
+    <h1>Teacher Details</h1>
+    <p>View teacher information</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Full Name</dt>
+            <dd class="col-sm-9"><strong>@Model.FullName</strong></dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Specialization</dt>
+            <dd class="col-sm-9"><span class="badge bg-info">@Model.Specialization</span></dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">@Model.Phone</dd>
+
+            <dt class="col-sm-3">Hire Date</dt>
+            <dd class="col-sm-9">@Model.HireDate.ToString("MMMM dd, yyyy")</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+        }
+    </div>
+</div>

@@ -1,0 +1,64 @@
+@model students_mvc.Models.ClassRoom
+
+@{
+    ViewData["Title"] = "Add Class";
+}
+
+<div class="page-header">
+    <h1>Add Class</h1>
+    <p>Create a new class</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Name" class="form-label">Class Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Class 1-A" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Grade" class="form-label">Grade</label>
+                    <input asp-for="Grade" class="form-control" placeholder="e.g. 1st, 2nd, 3rd" />
+                    <span asp-validation-for="Grade" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="RoomNumber" class="form-label">Room Number</label>
+                    <input asp-for="RoomNumber" class="form-control" placeholder="e.g. Room 101" />
+                    <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Capacity" class="form-label">Capacity</label>
+                    <input asp-for="Capacity" class="form-control" type="number" min="1" max="50" />
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Assign Teachers</label>
+                <select name="teacherIds" asp-items="@(ViewBag.TeacherList as SelectList)" class="form-select" multiple>
+                </select>
+                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple teachers</small>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Create
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
