@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using grades_mvc.Data;
 using grades_mvc.Models;
 using grades_mvc.Services;
@@ -7,23 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace grades_mvc.Controllers;
 
+[Authorize]
 public class GradesController(
     GradesDbContext context,
-    StudentsServiceClient studentsServiceClient,
-    ILogger<GradesController> logger) : Controller
+    IStudentsServiceClient studentsClient) : Controller
 {
     public async Task<IActionResult> Index()
     {
         var grades = await context.Grades.ToListAsync();
-        var studentsById = await GetStudentsByIdAsync();
-        var isStudentServiceUnavailable = studentsById is null;
+        var studentIds = grades.Select(g => g.StudentId).Distinct();
+        var students = await studentsClient.GetStudentsByIdsAsync(studentIds);
 
-        var viewModels = grades.Select(grade => ToViewModel(grade, studentsById, isStudentServiceUnavailable));
-
-        if (isStudentServiceUnavailable)
+        var viewModels = grades.Select(grade =>
         {
-            ViewData["WarningMessage"] = "Students service is unavailable. Showing student IDs instead.";
-        }
+            students.TryGetValue(grade.StudentId, out var student);
+            return ToViewModel(grade, student);
+        }).ToList();
 
         return View(viewModels);
     }
@@ -41,15 +41,8 @@ public class GradesController(
             return NotFound();
         }
 
-        var student = await GetStudentByIdAsync(grade.StudentId);
-        var isStudentServiceUnavailable = student is null;
-
-        if (isStudentServiceUnavailable)
-        {
-            ViewData["WarningMessage"] = "Students service is unavailable. Showing the student ID instead.";
-        }
-
-        return View(ToViewModel(grade, student, isStudentServiceUnavailable));
+        var student = await studentsClient.GetStudentByIdAsync(grade.StudentId);
+        return View(ToViewModel(grade, student));
     }
 
     public async Task<IActionResult> Create()
@@ -95,7 +88,7 @@ public class GradesController(
             return NotFound();
         }
 
-        var student = await GetStudentByIdAsync(grade.StudentId);
+        var student = await studentsClient.GetStudentByIdAsync(grade.StudentId);
 
         return View(new GradeFormViewModel
         {
@@ -164,15 +157,8 @@ public class GradesController(
             return NotFound();
         }
 
-        var student = await GetStudentByIdAsync(grade.StudentId);
-        var isStudentServiceUnavailable = student is null;
-
-        if (isStudentServiceUnavailable)
-        {
-            ViewData["WarningMessage"] = "Students service is unavailable. Showing the student ID instead.";
-        }
-
-        return View(ToViewModel(grade, student, isStudentServiceUnavailable));
+        var student = await studentsClient.GetStudentByIdAsync(grade.StudentId);
+        return View(ToViewModel(grade, student));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -189,58 +175,7 @@ public class GradesController(
         return RedirectToAction(nameof(Index));
     }
 
-    private async Task<Dictionary<int, StudentDto>?> GetStudentsByIdAsync()
-    {
-        try
-        {
-            var students = await studentsServiceClient.GetAllAsync();
-            return students.ToDictionary(student => student.Id);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogWarning(ex, "Students service request failed while loading all students.");
-            return null;
-        }
-        catch (TaskCanceledException ex)
-        {
-            logger.LogWarning(ex, "Students service request timed out while loading all students.");
-            return null;
-        }
-    }
-
-    private async Task<StudentDto?> GetStudentByIdAsync(int studentId)
-    {
-        try
-        {
-            return await studentsServiceClient.GetByIdAsync(studentId);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogWarning(ex, "Students service request failed while loading student {StudentId}.", studentId);
-            return null;
-        }
-        catch (TaskCanceledException ex)
-        {
-            logger.LogWarning(ex, "Students service request timed out while loading student {StudentId}.", studentId);
-            return null;
-        }
-    }
-
-    private static GradeViewModel ToViewModel(
-        Grade grade,
-        Dictionary<int, StudentDto>? studentsById,
-        bool isStudentServiceUnavailable)
-    {
-        StudentDto? student = null;
-        studentsById?.TryGetValue(grade.StudentId, out student);
-
-        return ToViewModel(grade, student, isStudentServiceUnavailable);
-    }
-
-    private static GradeViewModel ToViewModel(
-        Grade grade,
-        StudentDto? student,
-        bool isStudentServiceUnavailable)
+    private static GradeViewModel ToViewModel(Grade grade, Student? student)
     {
         return new GradeViewModel
         {
@@ -250,19 +185,15 @@ public class GradesController(
             CourseName = grade.CourseName,
             Score = grade.Score,
             GradeDate = grade.GradeDate,
-            Notes = grade.Notes,
-            IsStudentServiceUnavailable = isStudentServiceUnavailable
+            Notes = grade.Notes
         };
     }
 
     private async Task PopulateStudentDropdownAsync()
     {
-        var students = await GetStudentsByIdAsync();
-        if (students is not null)
-        {
-            ViewBag.StudentList = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-                students.Values, "Id", "FullName");
-        }
+        var students = await studentsClient.GetAllStudentsAsync();
+        ViewBag.StudentList = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            students, "Id", "FullName");
     }
 
     private Task<bool> GradeExists(int id)

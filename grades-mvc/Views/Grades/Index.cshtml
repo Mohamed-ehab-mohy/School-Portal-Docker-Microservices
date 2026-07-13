@@ -17,14 +17,6 @@
     </div>
 </div>
 
-@if (ViewData["WarningMessage"] is string warningMessage)
-{
-    <div class="alert alert-warning alert-fade-in d-flex align-items-center gap-2" role="alert">
-        <i class="bi bi-exclamation-triangle-fill fs-5 alert-icon-pulse"></i>
-        <span>@warningMessage</span>
-    </div>
-}
-
 @if (hasRecords)
 {
     <div class="table-container">
@@ -32,7 +24,6 @@
             <thead>
                 <tr>
                     <th>Student</th>
-                    <th>Student ID</th>
                     <th>Course</th>
                     <th>Score</th>
                     <th>Date</th>
@@ -43,17 +34,7 @@
         @foreach (var item in Model)
         {
                 <tr>
-                    <td>
-                        @if (item.IsStudentServiceUnavailable)
-                        {
-                            <span class="badge bg-secondary">ID: @item.StudentId</span>
-                        }
-                        else
-                        {
-                            <strong>@item.StudentName</strong>
-                        }
-                    </td>
-                    <td>@item.StudentId</td>
+                    <td><strong>@item.StudentName</strong></td>
                     <td>@item.CourseName</td>
                     <td><strong>@item.Score</strong></td>
                     <td>@item.GradeDate.ToString("yyyy-MM-dd")</td>

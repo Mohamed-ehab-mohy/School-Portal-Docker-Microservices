@@ -5,20 +5,18 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<GradesDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null)));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddHttpClient<StudentsServiceClient>(client =>
+builder.Services.AddHttpClient<IStudentsServiceClient, StudentsServiceClient>(client =>
 {
-    var baseUrl = builder.Configuration["StudentsService:BaseUrl"]
-        ?? throw new InvalidOperationException("StudentsService:BaseUrl is not configured.");
-
+    var baseUrl = builder.Configuration["StudentsService:BaseUrl"] ?? "http://students-mvc:8080";
     client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(10);
 });
+
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "postgresql");
 
 builder.Services.AddControllersWithViews();
 
@@ -42,9 +40,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

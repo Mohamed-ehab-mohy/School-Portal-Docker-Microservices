@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using students_mvc.Data;
@@ -5,9 +6,11 @@ using students_mvc.Models;
 
 namespace students_mvc.Controllers;
 
+[Authorize]
 public class StudentsController(ApplicationDbContext context) : Controller
 {
     [HttpGet("api/students")]
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<JsonResult> GetAll()
     {
         var students = await context.Students.ToListAsync();

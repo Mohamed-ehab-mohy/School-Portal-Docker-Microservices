@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: school-portal-students
+    runtime: image
+    image: docker.io/mohamedehab/school-portal-students:latest
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: school-portal-db
+          property: connectionString
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+    healthCheckPath: /health
+    ports:
+      - port: 8080
+
+  - type: web
+    name: school-portal-grades
+    runtime: image
+    image: docker.io/mohamedehab/school-portal-grades:latest
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: school-portal-db
+          property: connectionString
+      - key: StudentsService__BaseUrl
+        value: https://school-portal-students.onrender.com
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+    healthCheckPath: /health
+    ports:
+      - port: 8080
+
+  - type: pgsql
+    name: school-portal-db
+    plan: free
+    database: school_portal
+    user: school_portal

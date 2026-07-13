@@ -58,14 +58,12 @@
         </div>
         <div class="col">
             <div class="stat-card">
-                <div class="stat-icon @(ViewBag.StudentsServiceOnline == true ? "stat-icon-online" : "stat-icon-offline")">
-                    <i class="bi @(ViewBag.StudentsServiceOnline == true ? "bi-cloud-check-fill" : "bi-cloud-slash-fill")"></i>
+                <div class="stat-icon stat-icon-students">
+                    <i class="bi bi-people-fill"></i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-number">
-                        <span class="status-dot @(ViewBag.StudentsServiceOnline == true ? "status-dot-green" : "status-dot-red")"></span>
-                    </span>
-                    <span class="stat-label">@(ViewBag.StudentsServiceOnline == true ? "Students Service Online" : "Students Service Offline")</span>
+                    <span class="stat-number">@ViewBag.StudentCount</span>
+                    <span class="stat-label">Students</span>
                 </div>
             </div>
         </div>

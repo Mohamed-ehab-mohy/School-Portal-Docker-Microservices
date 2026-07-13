@@ -1,0 +1,18 @@
+# Docker
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/node_modules/
+**/.git/
+**/.gitignore
+**/README.md
+**/RAILWAY_DEPLOY.md
+**/.github/
+**/render.yaml
+**/railway.json
+**/.env
+**/.env.example
+**/*.md
+**/docker-compose*.yml

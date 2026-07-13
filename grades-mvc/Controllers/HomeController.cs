@@ -7,34 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace grades_mvc.Controllers;
 
-public class HomeController(
-    GradesDbContext context,
-    StudentsServiceClient studentsServiceClient,
-    ILogger<HomeController> logger) : Controller
+public class HomeController(GradesDbContext context, IStudentsServiceClient studentsClient) : Controller
 {
     public async Task<IActionResult> Index()
     {
         ViewBag.GradeCount = await context.Grades.CountAsync();
         ViewBag.SubjectCount = await context.Grades.Select(g => g.CourseName).Distinct().CountAsync();
 
-        try
-        {
-            var students = await studentsServiceClient.GetAllAsync();
-            ViewBag.StudentsServiceOnline = true;
-            ViewBag.ConnectedStudentCount = students.Count;
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogWarning(ex, "Students service unavailable on home page.");
-            ViewBag.StudentsServiceOnline = false;
-            ViewBag.ConnectedStudentCount = 0;
-        }
-        catch (TaskCanceledException ex)
-        {
-            logger.LogWarning(ex, "Students service timed out on home page.");
-            ViewBag.StudentsServiceOnline = false;
-            ViewBag.ConnectedStudentCount = 0;
-        }
+        var students = await studentsClient.GetAllStudentsAsync();
+        ViewBag.StudentCount = students.Count;
 
         return View();
     }

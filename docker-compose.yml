@@ -1,23 +1,24 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  postgres:
+    image: postgres:16-alpine
     container_name: school-portal-db
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=${SA_PASSWORD}
-      - MSSQL_PID=Developer
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: school_portal
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - school-portal-data:/var/opt/mssql
+      - school-portal-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
     networks:
       - school-network
     healthcheck:
-      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${SA_PASSWORD}" -C -Q "SELECT 1" || exit 1
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s
+      start_period: 10s
 
   students-mvc:
     build:
@@ -27,10 +28,11 @@ services:
     ports:
       - "5001:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=StudentsDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=students_db;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - AdminPassword=${ADMIN_PASSWORD:-Admin@123}
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
-      sqlserver:
+      postgres:
         condition: service_healthy
     networks:
       - school-network
@@ -43,12 +45,14 @@ services:
     ports:
       - "5002:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=GradesDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true
-      - StudentsService__BaseUrl=http://students-mvc:8080/
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=grades_db;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - StudentsService__BaseUrl=http://students-mvc:8080
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
-      sqlserver:
+      postgres:
         condition: service_healthy
+      students-mvc:
+        condition: service_started
     networks:
       - school-network
 
