@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -14,6 +15,9 @@
     <link rel="stylesheet" href="~/grades_mvc.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var studentsUrl = Configuration["StudentsService:BaseUrl"] ?? "http://localhost:5001";
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-school mb-0">
             <div class="container-fluid">
@@ -33,7 +37,7 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="http://localhost:5001/Students" target="_self">Students</a>
+                                <a class="nav-link" href="@studentsUrl/Students">Students</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Grades" ? "active" : "")" asp-area="" asp-controller="Grades" asp-action="Index">Grades</a>
@@ -49,23 +53,34 @@
                             <li class="nav-item">
                                 <span class="nav-link text-light" style="opacity:0.9;">
                                     <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="badge bg-danger ms-1">Admin</span>
+                                    }
+                                    else if (User.IsInRole("Teacher"))
+                                    {
+                                        <span class="badge bg-info ms-1">Teacher</span>
+                                    }
                                 </span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="http://localhost:5001/Account/Logout" style="opacity:0.8;">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
-                                </a>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="nav-link btn btn-link text-light" style="opacity:0.8;text-decoration:none;">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
+                                </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="http://localhost:5001/Account/Login">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
                                     <i class="bi bi-box-arrow-in-right"></i> Login
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="http://localhost:5001/Account/Register">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">
                                     <i class="bi bi-person-plus"></i> Register
                                 </a>
                             </li>
@@ -93,7 +108,7 @@
                         School Portal
                     </h5>
                     <p class="footer-text">
-                        A microservices-based school management system built with ASP.NET Core 8.0 MVC, Docker containers, and SQL Server.
+                        A microservices-based school management system built with ASP.NET Core 10 MVC, Docker containers, and PostgreSQL.
                     </p>
                 </div>
                 <div class="footer-col">

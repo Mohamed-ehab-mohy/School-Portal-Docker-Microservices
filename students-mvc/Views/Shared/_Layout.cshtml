@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -14,6 +15,9 @@
     <link rel="stylesheet" href="~/students_mvc.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var gradesUrl = Configuration["GradesService:BaseUrl"] ?? "http://localhost:5002";
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-school mb-0">
             <div class="container-fluid">
@@ -36,7 +40,7 @@
                                 <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Students" ? "active" : "")" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="http://localhost:5002/Grades" target="_self">Grades</a>
+                                <a class="nav-link" href="@gradesUrl/Grades">Grades</a>
                             </li>
                         }
                         <li class="nav-item">
@@ -49,10 +53,19 @@
                             <li class="nav-item">
                                 <span class="nav-link text-light" style="opacity:0.9;">
                                     <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="badge bg-danger ms-1">Admin</span>
+                                    }
+                                    else if (User.IsInRole("Teacher"))
+                                    {
+                                        <span class="badge bg-info ms-1">Teacher</span>
+                                    }
                                 </span>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
                                     <button type="submit" class="nav-link btn btn-link text-light" style="opacity:0.8;text-decoration:none;">
                                         <i class="bi bi-box-arrow-right"></i> Logout
                                     </button>
@@ -95,7 +108,7 @@
                         School Portal
                     </h5>
                     <p class="footer-text">
-                        A microservices-based school management system built with ASP.NET Core 8.0 MVC, Docker containers, and SQL Server.
+                        A microservices-based school management system built with ASP.NET Core 10 MVC, Docker containers, and PostgreSQL.
                     </p>
                 </div>
                 <div class="footer-col">

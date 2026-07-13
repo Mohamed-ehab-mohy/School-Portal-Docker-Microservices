@@ -1,10 +1,16 @@
 using grades_mvc.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace grades_mvc.Data;
 
-public class GradesDbContext(DbContextOptions<GradesDbContext> options) : DbContext(options)
+public class GradesDbContext : IdentityDbContext<ApplicationUser>
 {
+    public GradesDbContext(DbContextOptions<GradesDbContext> options)
+        : base(options)
+    {
+    }
+
     public DbSet<Grade> Grades { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

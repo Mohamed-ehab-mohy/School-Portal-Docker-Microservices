@@ -1,10 +1,9 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using students_mvc.Models;
+using grades_mvc.Models;
 
-namespace students_mvc.Controllers;
+namespace grades_mvc.Controllers;
 
 public class AccountController(
     UserManager<ApplicationUser> userManager,

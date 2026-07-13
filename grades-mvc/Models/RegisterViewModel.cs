@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace students_mvc.Models;
+namespace grades_mvc.Models;
 
 public class RegisterViewModel
 {
