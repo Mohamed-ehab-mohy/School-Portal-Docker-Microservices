@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="api-gateway/api-gateway.csproj" />
+  <Project Path="grades-mvc.Tests/grades-mvc.Tests.csproj" />
+  <Project Path="grades-mvc/grades-mvc.csproj" />
+  <Project Path="students-mvc.Tests/students-mvc.Tests.csproj" />
+  <Project Path="students-mvc/students-mvc.csproj" />
+</Solution>

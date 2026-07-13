@@ -97,6 +97,12 @@ services:
         condition: service_healthy
       seq:
         condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     networks:
       - school-network
 
@@ -122,9 +128,15 @@ services:
       rabbitmq:
         condition: service_healthy
       students-mvc:
-        condition: service_started
+        condition: service_healthy
       seq:
         condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     networks:
       - school-network
 
@@ -140,11 +152,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       students-mvc:
-        condition: service_started
+        condition: service_healthy
       grades-mvc:
-        condition: service_started
+        condition: service_healthy
       seq:
         condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
     networks:
       - school-network
 

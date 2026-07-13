@@ -28,11 +28,25 @@ public class StudentsController(
         return Json(student);
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? search, int page = 1)
     {
         if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
         {
-            return View("Index", await context.Students.ToListAsync());
+            const int pageSize = 10;
+            var query = context.Students.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var searchLower = search.ToLower();
+                query = query.Where(s =>
+                    s.FirstName.ToLower().Contains(searchLower) ||
+                    s.LastName.ToLower().Contains(searchLower) ||
+                    s.Email.ToLower().Contains(searchLower));
+            }
+
+            query = query.OrderBy(s => s.LastName).ThenBy(s => s.FirstName);
+            var students = await PaginatedList<Student>.CreateAsync(query, page, pageSize, search);
+            return View("Index", students);
         }
 
         var email = User.FindFirstValue(ClaimTypes.Email);

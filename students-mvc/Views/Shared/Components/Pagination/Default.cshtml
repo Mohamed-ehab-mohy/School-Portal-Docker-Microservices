@@ -1,0 +1,80 @@
+@model dynamic
+
+@{
+    var pageIndex = (int)Model.PageIndex;
+    var totalPages = (int)Model.TotalPages;
+    var totalCount = (int)Model.TotalCount;
+    var searchTerm = ViewBag.SearchTerm as string;
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+@if (totalPages > 1)
+{
+    <nav class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted">
+            Showing page @pageIndex of @totalPages (@totalCount total records)
+        </div>
+        <ul class="pagination mb-0">
+            @if (pageIndex > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@GetPageUrl(1, searchTerm)">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@GetPageUrl(pageIndex - 1, searchTerm)">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            }
+
+            @{
+                var startPage = Math.Max(1, pageIndex - 2);
+                var endPage = Math.Min(totalPages, pageIndex + 2);
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == pageIndex ? "active" : "")">
+                    <a class="page-link" href="@GetPageUrl(i, searchTerm)">@i</a>
+                </li>
+            }
+
+            @if (pageIndex < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@GetPageUrl(pageIndex + 1, searchTerm)">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@GetPageUrl(totalPages, searchTerm)">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@functions {
+    string GetPageUrl(int page, string? search)
+    {
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var routeValues = new Dictionary<string, string?>
+        {
+            ["page"] = page.ToString()
+        };
+
+        if (!string.IsNullOrEmpty(search))
+        {
+            routeValues["search"] = search;
+        }
+
+        var queryString = string.Join("&", routeValues.Where(r => r.Value != null).Select(r => $"{r.Key}={r.Value}"));
+        return $"/{controller}/{action}?{queryString}";
+    }
+}
