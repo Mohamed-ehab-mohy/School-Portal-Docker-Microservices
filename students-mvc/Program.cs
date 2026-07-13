@@ -1,10 +1,23 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using students_mvc.Data;
 using students_mvc.Messaging;
 using students_mvc.Models;
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Seq(Environment.GetEnvironmentVariable("Serilog__SeqServer") ?? "http://seq:5341")
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Service", "students-mvc")
+    .CreateLogger();
+
+try
+{
+    Log.Information("Starting students-mvc");
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection("RabbitMQ"));
 builder.Services.AddSingleton<IStudentMessageBus, RabbitMqStudentMessageBus>();
@@ -102,3 +115,12 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

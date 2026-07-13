@@ -39,6 +39,41 @@ services:
       retries: 10
       start_period: 30s
 
+  seq:
+    image: datalust/seq:latest
+    container_name: school-portal-seq
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq-data:/var/opt/seq
+    networks:
+      - school-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: school-portal-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - school-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: school-portal-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - school-network
+
   students-mvc:
     build:
       context: ./students-mvc
@@ -53,12 +88,15 @@ services:
       - RabbitMQ__Port=5672
       - RabbitMQ__Username=${RABBITMQ_USER:-guest}
       - RabbitMQ__Password=${RABBITMQ_PASS:-guest}
+      - Serilog__SeqServer=http://seq:5341
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      seq:
+        condition: service_started
     networks:
       - school-network
 
@@ -76,6 +114,7 @@ services:
       - RabbitMQ__Port=5672
       - RabbitMQ__Username=${RABBITMQ_USER:-guest}
       - RabbitMQ__Password=${RABBITMQ_PASS:-guest}
+      - Serilog__SeqServer=http://seq:5341
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
@@ -83,6 +122,8 @@ services:
       rabbitmq:
         condition: service_healthy
       students-mvc:
+        condition: service_started
+      seq:
         condition: service_started
     networks:
       - school-network
@@ -95,11 +136,14 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - Serilog__SeqServer=http://seq:5341
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       students-mvc:
         condition: service_started
       grades-mvc:
+        condition: service_started
+      seq:
         condition: service_started
     networks:
       - school-network
@@ -107,6 +151,8 @@ services:
 volumes:
   school-portal-data:
   rabbitmq-data:
+  seq-data:
+  grafana-data:
 
 networks:
   school-network:

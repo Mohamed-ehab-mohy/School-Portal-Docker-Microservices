@@ -1,14 +1,39 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
 
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Seq(Environment.GetEnvironmentVariable("Serilog__SeqServer") ?? "http://seq:5341")
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Service", "api-gateway")
+    .CreateLogger();
 
-builder.Services.AddHealthChecks();
+try
+{
+    Log.Information("Starting api-gateway");
 
-var app = builder.Build();
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Host.UseSerilog();
 
-app.MapHealthChecks("/health");
+    builder.Services.AddReverseProxy()
+        .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-app.MapReverseProxy();
+    builder.Services.AddHealthChecks();
 
-app.Run();
+    var app = builder.Build();
+
+    app.UseSerilogRequestLogging();
+
+    app.MapHealthChecks("/health");
+
+    app.MapReverseProxy();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
