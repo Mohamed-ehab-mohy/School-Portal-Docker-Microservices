@@ -87,6 +87,23 @@ services:
     networks:
       - school-network
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      students-mvc:
+        condition: service_started
+      grades-mvc:
+        condition: service_started
+    networks:
+      - school-network
+
 volumes:
   school-portal-data:
   rabbitmq-data:
