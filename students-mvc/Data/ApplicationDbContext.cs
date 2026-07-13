@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ClassRoom> ClassRooms { get; set; }
     public DbSet<ClassTeacher> ClassTeachers { get; set; }
     public DbSet<StudentClass> StudentClasses { get; set; }
+    public DbSet<Attendance> Attendances { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

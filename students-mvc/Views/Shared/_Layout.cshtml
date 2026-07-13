@@ -55,6 +55,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendance" ? "active" : "")" asp-area="" asp-controller="Attendance" asp-action="Index">
+                                    <i class="bi bi-clipboard-check"></i> Attendance
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="@gradesUrl/Grades">
                                     <i class="bi bi-journal-text"></i> Grades
                                 </a>

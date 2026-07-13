@@ -1,0 +1,124 @@
+@using students_mvc.Models
+@model IEnumerable<students_mvc.Models.Attendance>
+
+@{
+    ViewData["Title"] = "Attendance";
+    var hasRecords = Model.Any();
+    var isAdmin = User.IsInRole("Admin");
+    var isTeacher = User.IsInRole("Teacher");
+    var selectedClassId = ViewBag.SelectedClassId ?? 0;
+    var selectedDate = (DateTime)(ViewBag.SelectedDate ?? DateTime.Today);
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Attendance</h1>
+        <p>Track student attendance records</p>
+    </div>
+    @if (isAdmin || isTeacher)
+    {
+        <div>
+            <a asp-action="TakeAttendance" class="btn btn-primary">
+                <i class="bi bi-clipboard-check"></i> Take Attendance
+            </a>
+        </div>
+    }
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Class</label>
+                <select name="classId" asp-items="@(ViewBag.ClassList as SelectList)" class="form-select">
+                    <option value="">-- All Classes --</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Date</label>
+                <input type="date" name="date" value="@selectedDate.ToString("yyyy-MM-dd")" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Filter
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (hasRecords)
+{
+    <div class="table-container">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Class</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td><strong>@item.Student.FullName</strong></td>
+                    <td>@item.ClassRoom.Name</td>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case AttendanceStatus.Present:
+                                <span class="badge bg-success">Present</span>
+                                break;
+                            case AttendanceStatus.Absent:
+                                <span class="badge bg-danger">Absent</span>
+                                break;
+                            case AttendanceStatus.Late:
+                                <span class="badge bg-warning text-dark">Late</span>
+                                break;
+                            case AttendanceStatus.Excused:
+                                <span class="badge bg-info">Excused</span>
+                                break;
+                        }
+                    </td>
+                    <td>@(item.Notes ?? "-")</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-clipboard-check"></i>
+            </div>
+            <h5>No attendance records</h5>
+            <p>No records found for the selected filters. Try a different date or class.</p>
+            @if (isAdmin || isTeacher)
+            {
+                <a asp-action="TakeAttendance" class="btn btn-primary">
+                    <i class="bi bi-clipboard-check"></i> Take Attendance
+                </a>
+            }
+        </div>
+    </div>
+}

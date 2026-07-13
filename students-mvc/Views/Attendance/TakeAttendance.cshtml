@@ -1,0 +1,103 @@
+@using students_mvc.Models
+@model List<students_mvc.Controllers.AttendanceEntryViewModel>
+
+@{
+    ViewData["Title"] = "Take Attendance";
+    var selectedClassId = ViewBag.SelectedClassId ?? 0;
+    var selectedDate = (DateTime)(ViewBag.SelectedDate ?? DateTime.Today);
+    var className = ViewBag.ClassName as string;
+}
+
+<div class="page-header">
+    <h1>Take Attendance</h1>
+    <p>Mark student attendance for a class</p>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="TakeAttendance" method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Select Class</label>
+                <select name="classId" asp-items="@(ViewBag.ClassList as SelectList)" class="form-select">
+                    <option value="">-- Select Class --</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Date</label>
+                <input type="date" name="date" value="@selectedDate.ToString("yyyy-MM-dd")" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Load Students
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (selectedClassId > 0 && Model.Any())
+{
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-clipboard-check"></i>
+                @className - @selectedDate.ToString("MMMM dd, yyyy")
+            </h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="TakeAttendance" method="post">
+                <input type="hidden" name="classId" value="@selectedClassId" />
+                <input type="hidden" name="date" value="@selectedDate.ToString("yyyy-MM-dd")" />
+
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th style="width: 200px;">Status</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@Model[i].StudentName</strong>
+                                <input type="hidden" name="[@i].StudentId" value="@Model[i].StudentId" />
+                                <input type="hidden" name="[@i].StudentName" value="@Model[i].StudentName" />
+                            </td>
+                            <td>
+                                <select name="[@i].Status" class="form-select form-select-sm">
+                                    <option value="Present" selected="@(Model[i].Status == AttendanceStatus.Present)">✅ Present</option>
+                                    <option value="Absent" selected="@(Model[i].Status == AttendanceStatus.Absent)">❌ Absent</option>
+                                    <option value="Late" selected="@(Model[i].Status == AttendanceStatus.Late)">⏰ Late</option>
+                                    <option value="Excused" selected="@(Model[i].Status == AttendanceStatus.Excused)">📋 Excused</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="[@i].Notes" value="@Model[i].Notes" class="form-control form-control-sm" placeholder="Optional note..." />
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Save Attendance
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else if (selectedClassId > 0)
+{
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        No students enrolled in this class. Please enroll students first.
+    </div>
+}
