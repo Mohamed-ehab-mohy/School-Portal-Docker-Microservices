@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Grades";
     var hasRecords = Model.Any();
+    var isAdmin = User.IsInRole("Admin");
+    var isTeacher = User.IsInRole("Teacher");
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
@@ -10,11 +12,14 @@
         <h1>Grades</h1>
         <p>Manage student grades and scores</p>
     </div>
-    <div>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> Create New
-        </a>
-    </div>
+    @if (isAdmin || isTeacher)
+    {
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Create New
+            </a>
+        </div>
+    }
 </div>
 
 @if (hasRecords)
@@ -39,15 +44,21 @@
                     <td><strong>@item.Score</strong></td>
                     <td>@item.GradeDate.ToString("yyyy-MM-dd")</td>
                     <td class="text-end text-nowrap">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Edit">
-                            <i class="bi bi-pencil"></i>
-                        </a>
+                        @if (isAdmin || isTeacher)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        }
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Details">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        }
                     </td>
                 </tr>
         }
@@ -64,9 +75,12 @@ else
             </div>
             <h5>No grades yet</h5>
             <p>Start by adding the first grade entry for a student.</p>
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Add New Grade
-            </a>
+            @if (isAdmin || isTeacher)
+            {
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i> Add New Grade
+                </a>
+            }
         </div>
     </div>
 }

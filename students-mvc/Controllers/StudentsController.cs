@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,19 @@ public class StudentsController(ApplicationDbContext context) : Controller
 
     public async Task<IActionResult> Index()
     {
-        return View(await context.Students.ToListAsync());
+        if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+        {
+            return View("Index", await context.Students.ToListAsync());
+        }
+
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var student = await context.Students.FirstOrDefaultAsync(s => s.Email == email);
+        if (student is not null)
+        {
+            return View("Details", student);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<IActionResult> Details(int? id)
@@ -47,6 +60,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
         return View(student);
     }
 
+    [Authorize(Roles = "Admin,Teacher")]
     public IActionResult Create()
     {
         return View();
@@ -54,6 +68,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,DateOfBirth,EnrollmentDate")] Student student)
     {
         if (ModelState.IsValid)
@@ -66,6 +81,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
         return View(student);
     }
 
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id is null)
@@ -84,6 +100,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,DateOfBirth,EnrollmentDate")] Student student)
     {
         if (id != student.Id)
@@ -114,6 +131,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
         return View(student);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id is null)
@@ -134,6 +152,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var student = await context.Students.FindAsync(id);

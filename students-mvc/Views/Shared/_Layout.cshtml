@@ -36,12 +36,27 @@
                         </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Students" ? "active" : "")" asp-area="" asp-controller="Students" asp-action="Index">
+                                        <i class="bi bi-people"></i> Students
+                                    </a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Students" ? "active" : "")" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+                                <a class="nav-link" href="@gradesUrl/Grades">
+                                    <i class="bi bi-journal-text"></i> Grades
+                                </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@gradesUrl/Grades">Grades</a>
-                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@gradesUrl/Grades/Create">
+                                        <i class="bi bi-plus-circle"></i> Add Grade
+                                    </a>
+                                </li>
+                            }
                         }
                         <li class="nav-item">
                             <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -60,6 +75,14 @@
                                     else if (User.IsInRole("Teacher"))
                                     {
                                         <span class="badge bg-info ms-1">Teacher</span>
+                                    }
+                                    else if (User.IsInRole("Student"))
+                                    {
+                                        <span class="badge bg-success ms-1">Student</span>
+                                    }
+                                    else if (User.IsInRole("Parent"))
+                                    {
+                                        <span class="badge bg-warning text-dark ms-1">Parent</span>
                                     }
                                 </span>
                             </li>

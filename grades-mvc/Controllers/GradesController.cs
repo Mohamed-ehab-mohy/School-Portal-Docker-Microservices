@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using grades_mvc.Data;
 using grades_mvc.Models;
@@ -45,6 +46,7 @@ public class GradesController(
         return View(ToViewModel(grade, student));
     }
 
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Create()
     {
         await PopulateStudentDropdownAsync();
@@ -53,6 +55,7 @@ public class GradesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Create(GradeFormViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -75,6 +78,7 @@ public class GradesController(
         return View(viewModel);
     }
 
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id is null)
@@ -104,6 +108,7 @@ public class GradesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Teacher")]
     public async Task<IActionResult> Edit(int id, GradeFormViewModel viewModel)
     {
         if (id != viewModel.Id)
@@ -144,6 +149,7 @@ public class GradesController(
         return View(viewModel);
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id is null)
@@ -163,6 +169,7 @@ public class GradesController(
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var grade = await context.Grades.FindAsync(id);
