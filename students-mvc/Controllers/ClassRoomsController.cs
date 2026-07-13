@@ -10,14 +10,26 @@ namespace students_mvc.Controllers;
 [Authorize]
 public class ClassRoomsController(ApplicationDbContext context) : Controller
 {
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? search, int page = 1)
     {
-        var classRooms = await context.ClassRooms
+        const int pageSize = 10;
+        var query = context.ClassRooms
             .Include(c => c.ClassTeachers)
                 .ThenInclude(ct => ct.Teacher)
             .Include(c => c.StudentClasses)
-            .ToListAsync();
+            .AsQueryable();
 
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchLower = search.ToLower();
+            query = query.Where(c =>
+                c.Name.ToLower().Contains(searchLower) ||
+                c.Grade.ToLower().Contains(searchLower) ||
+                c.RoomNumber.ToLower().Contains(searchLower));
+        }
+
+        query = query.OrderBy(c => c.Grade).ThenBy(c => c.Name);
+        var classRooms = await PaginatedList<ClassRoom>.CreateAsync(query, page, pageSize, search);
         return View(classRooms);
     }
 

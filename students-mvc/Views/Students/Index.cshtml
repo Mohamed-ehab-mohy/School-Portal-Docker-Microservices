@@ -1,4 +1,4 @@
-@model IEnumerable<students_mvc.Models.Student>
+@model students_mvc.Models.PaginatedList<students_mvc.Models.Student>
 
 @{
     ViewData["Title"] = "Students";
@@ -22,17 +22,51 @@
     }
 </div>
 
+<!-- Search Bar -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label class="form-label">Search Students</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" value="@Model.SearchTerm" class="form-control"
+                           placeholder="Search by name or email..." />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg"></i> Clear
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
 @if (hasRecords)
 {
+    @if (!string.IsNullOrEmpty(Model.SearchTerm))
+    {
+        <div class="alert alert-info">
+            Found <strong>@Model.TotalCount</strong> results for "<strong>@Model.SearchTerm</strong>"
+        </div>
+    }
+
     <div class="table-container">
         <table class="table table-striped mb-0">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-                    <th>@Html.DisplayNameFor(model => model.LastName)</th>
-                    <th>@Html.DisplayNameFor(model => model.Email)</th>
-                    <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
-                    <th>@Html.DisplayNameFor(model => model.EnrollmentDate)</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Enrollment Date</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
@@ -67,6 +101,8 @@
             </tbody>
         </table>
     </div>
+
+    @await Component.InvokeAsync("Pagination", new { items = Model, searchTerm = Model.SearchTerm })
 }
 else
 {
@@ -75,11 +111,25 @@ else
             <div class="empty-icon">
                 <i class="bi bi-people"></i>
             </div>
-            <h5>No students yet</h5>
-            <p>Get started by adding your first student to the system.</p>
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Add New Student
-            </a>
+            @if (!string.IsNullOrEmpty(Model.SearchTerm))
+            {
+                <h5>No results found</h5>
+                <p>No students match "<strong>@Model.SearchTerm</strong>". Try a different search.</p>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i> Clear Search
+                </a>
+            }
+            else
+            {
+                <h5>No students yet</h5>
+                <p>Get started by adding your first student to the system.</p>
+                @if (isAdmin || isTeacher)
+                {
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Add New Student
+                    </a>
+                }
+            }
         </div>
     </div>
 }

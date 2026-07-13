@@ -10,8 +10,9 @@ namespace students_mvc.Controllers;
 [Authorize]
 public class AttendanceController(ApplicationDbContext context) : Controller
 {
-    public async Task<IActionResult> Index(int? classId, DateTime? date)
+    public async Task<IActionResult> Index(int? classId, DateTime? date, string? search, int page = 1)
     {
+        const int pageSize = 15;
         var selectedDate = date ?? DateTime.Today;
         var selectedClassId = classId ?? 0;
 
@@ -27,11 +28,23 @@ public class AttendanceController(ApplicationDbContext context) : Controller
 
         query = query.Where(a => a.Date == selectedDate);
 
-        var attendances = await query.OrderBy(a => a.Student.LastName).ToListAsync();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchLower = search.ToLower();
+            query = query.Where(a =>
+                a.Student.FirstName.ToLower().Contains(searchLower) ||
+                a.Student.LastName.ToLower().Contains(searchLower) ||
+                a.ClassRoom.Name.ToLower().Contains(searchLower));
+        }
+
+        query = query.OrderBy(a => a.Student.LastName).ThenBy(a => a.Student.FirstName);
+        var attendances = await PaginatedList<Attendance>.CreateAsync(query, page, pageSize, search);
 
         await PopulateClassDropdownAsync();
         ViewBag.SelectedClassId = selectedClassId;
         ViewBag.SelectedDate = selectedDate;
+        ViewBag.SearchTerm = search;
+        ViewBag.Page = page;
 
         return View(attendances);
     }

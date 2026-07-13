@@ -1,5 +1,5 @@
 @using students_mvc.Models
-@model IEnumerable<students_mvc.Models.Attendance>
+@model students_mvc.Models.PaginatedList<students_mvc.Models.Attendance>
 
 @{
     ViewData["Title"] = "Attendance";
@@ -8,6 +8,7 @@
     var isTeacher = User.IsInRole("Teacher");
     var selectedClassId = ViewBag.SelectedClassId ?? 0;
     var selectedDate = (DateTime)(ViewBag.SelectedDate ?? DateTime.Today);
+    var searchTerm = ViewBag.SearchTerm as string;
 }
 
 <div class="page-header d-flex justify-content-between align-items-center">
@@ -28,17 +29,25 @@
 <div class="card mb-4">
     <div class="card-body">
         <form asp-action="Index" method="get" class="row g-3 align-items-end">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Class</label>
                 <select name="classId" asp-items="@(ViewBag.ClassList as SelectList)" class="form-select">
                     <option value="">-- All Classes --</option>
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Date</label>
                 <input type="date" name="date" value="@selectedDate.ToString("yyyy-MM-dd")" class="form-control" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" value="@searchTerm" class="form-control"
+                           placeholder="Search student or class..." />
+                </div>
+            </div>
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search"></i> Filter
                 </button>
@@ -47,6 +56,13 @@
         </form>
     </div>
 </div>
+
+@if (!string.IsNullOrEmpty(searchTerm))
+{
+    <div class="alert alert-info">
+        Found <strong>@Model.TotalCount</strong> results for "<strong>@searchTerm</strong>"
+    </div>
+}
 
 @if (hasRecords)
 {
@@ -103,6 +119,8 @@
             </tbody>
         </table>
     </div>
+
+    @await Component.InvokeAsync("Pagination", new { items = Model, searchTerm = searchTerm })
 }
 else
 {
@@ -111,13 +129,24 @@ else
             <div class="empty-icon">
                 <i class="bi bi-clipboard-check"></i>
             </div>
-            <h5>No attendance records</h5>
-            <p>No records found for the selected filters. Try a different date or class.</p>
-            @if (isAdmin || isTeacher)
+            @if (!string.IsNullOrEmpty(searchTerm))
             {
-                <a asp-action="TakeAttendance" class="btn btn-primary">
-                    <i class="bi bi-clipboard-check"></i> Take Attendance
+                <h5>No results found</h5>
+                <p>No attendance records match "<strong>@searchTerm</strong>". Try a different search.</p>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i> Clear Search
                 </a>
+            }
+            else
+            {
+                <h5>No attendance records</h5>
+                <p>No records found for the selected filters. Try a different date or class.</p>
+                @if (isAdmin || isTeacher)
+                {
+                    <a asp-action="TakeAttendance" class="btn btn-primary">
+                        <i class="bi bi-clipboard-check"></i> Take Attendance
+                    </a>
+                }
             }
         </div>
     </div>

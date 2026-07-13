@@ -9,9 +9,24 @@ namespace students_mvc.Controllers;
 [Authorize]
 public class TeachersController(ApplicationDbContext context) : Controller
 {
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? search, int page = 1)
     {
-        return View(await context.Teachers.ToListAsync());
+        const int pageSize = 10;
+        var query = context.Teachers.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchLower = search.ToLower();
+            query = query.Where(t =>
+                t.FirstName.ToLower().Contains(searchLower) ||
+                t.LastName.ToLower().Contains(searchLower) ||
+                t.Email.ToLower().Contains(searchLower) ||
+                t.Specialization.ToLower().Contains(searchLower));
+        }
+
+        query = query.OrderBy(t => t.LastName).ThenBy(t => t.FirstName);
+        var teachers = await PaginatedList<Teacher>.CreateAsync(query, page, pageSize, search);
+        return View(teachers);
     }
 
     public async Task<IActionResult> Details(int? id)

@@ -1,4 +1,4 @@
-@model IEnumerable<students_mvc.Models.ClassRoom>
+@model students_mvc.Models.PaginatedList<students_mvc.Models.ClassRoom>
 
 @{
     ViewData["Title"] = "Classes";
@@ -21,8 +21,42 @@
     }
 </div>
 
+<!-- Search Bar -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label class="form-label">Search Classes</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" value="@Model.SearchTerm" class="form-control"
+                           placeholder="Search by class name, grade, or room..." />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg"></i> Clear
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
 @if (hasRecords)
 {
+    @if (!string.IsNullOrEmpty(Model.SearchTerm))
+    {
+        <div class="alert alert-info">
+            Found <strong>@Model.TotalCount</strong> results for "<strong>@Model.SearchTerm</strong>"
+        </div>
+    }
+
     <div class="table-container">
         <table class="table table-striped mb-0">
             <thead>
@@ -75,6 +109,8 @@
             </tbody>
         </table>
     </div>
+
+    @await Component.InvokeAsync("Pagination", new { items = Model, searchTerm = Model.SearchTerm })
 }
 else
 {
@@ -83,13 +119,24 @@ else
             <div class="empty-icon">
                 <i class="bi bi-building"></i>
             </div>
-            <h5>No classes yet</h5>
-            <p>Get started by adding your first class to the system.</p>
-            @if (isAdmin)
+            @if (!string.IsNullOrEmpty(Model.SearchTerm))
             {
-                <a asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-lg"></i> Add New Class
+                <h5>No results found</h5>
+                <p>No classes match "<strong>@Model.SearchTerm</strong>". Try a different search.</p>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i> Clear Search
                 </a>
+            }
+            else
+            {
+                <h5>No classes yet</h5>
+                <p>Get started by adding your first class to the system.</p>
+                @if (isAdmin)
+                {
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Add New Class
+                    </a>
+                }
             }
         </div>
     </div>
