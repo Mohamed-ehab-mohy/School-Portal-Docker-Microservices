@@ -12,6 +12,7 @@ public class GradesDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<Grade> Grades { get; set; }
+    public DbSet<StudentCache> StudentCache { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

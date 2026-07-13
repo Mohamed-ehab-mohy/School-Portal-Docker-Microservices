@@ -1,10 +1,14 @@
 using grades_mvc.Data;
+using grades_mvc.Messaging;
 using grades_mvc.Models;
 using grades_mvc.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection("RabbitMQ"));
+builder.Services.AddHostedService<StudentEventConsumer>();
 
 builder.Services.AddDbContext<GradesDbContext>(options =>
     options.UseNpgsql(

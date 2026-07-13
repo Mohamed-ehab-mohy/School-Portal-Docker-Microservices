@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using students_mvc.Data;
+using students_mvc.Messaging;
 using students_mvc.Models;
 
 namespace students_mvc.Controllers;
 
 [Authorize]
-public class StudentsController(ApplicationDbContext context) : Controller
+public class StudentsController(
+    ApplicationDbContext context,
+    IStudentMessageBus messageBus) : Controller
 {
     [HttpGet("api/students")]
     [Authorize(Roles = "Admin,Teacher")]
@@ -75,6 +78,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
         {
             context.Add(student);
             await context.SaveChangesAsync();
+            await messageBus.PublishStudentEvent(student, StudentEventTypes.Created);
             return RedirectToAction(nameof(Index));
         }
 
@@ -114,6 +118,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
             {
                 context.Update(student);
                 await context.SaveChangesAsync();
+                await messageBus.PublishStudentEvent(student, StudentEventTypes.Updated);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -158,6 +163,7 @@ public class StudentsController(ApplicationDbContext context) : Controller
         var student = await context.Students.FindAsync(id);
         if (student is not null)
         {
+            await messageBus.PublishStudentEvent(student, StudentEventTypes.Deleted);
             context.Students.Remove(student);
             await context.SaveChangesAsync();
         }
