@@ -3,11 +3,12 @@
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-✔-2496ED?logo=docker)](https://docs.docker.com/compose/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql)](https://www.postgresql.org/)
+[![RabbitMQ](https://img.shields.io/badge/RabbitMQ-3-FF6600?logo=rabbitmq)](https://www.rabbitmq.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own PostgreSQL database ensuring complete **data autonomy and fault isolation**.
+A **portfolio-ready** school management system built on a **microservices architecture** with Docker containers, PostgreSQL, RabbitMQ messaging, API Gateway, role-based authentication, attendance tracking, notifications, observability stack, and CI/CD pipeline.
 
-**Deploy for free** on Aiven + SnapDeploy, Fly.io, or Koyeb in minutes.
+**Deploy for free** on Aiven + SnapDeploy, Fly.io, or Koyeb.
 
 ---
 
@@ -15,9 +16,13 @@ A modern school management system built on a **microservices architecture** with
 
 | Service | URL |
 |---------|-----|
-| Students Portal | [localhost:5001](http://localhost:5001) |
-| Grades Portal | [localhost:5002](http://localhost:5002) |
-| Health Check | [localhost:5001/health](http://localhost:5001/health) |
+| **API Gateway** | [localhost:8080](http://localhost:8080) |
+| **Students Portal** | [localhost:5001](http://localhost:5001) |
+| **Grades Portal** | [localhost:5002](http://localhost:5002) |
+| **Seq (Logs)** | [localhost:5341](http://localhost:5341) |
+| **Prometheus** | [localhost:9090](http://localhost:9090) |
+| **Grafana** | [localhost:3000](http://localhost:3000) |
+| **RabbitMQ** | [localhost:15672](http://localhost:15672) |
 
 ---
 
@@ -35,48 +40,68 @@ cp .env.example .env
 docker compose up --build
 ```
 
-**That's it.** No manual database setup. No manual migration runs. Auto-migrations and data seeding (20 students + 20 grades) execute automatically on first startup.
+**That's it.** Auto-migrations, data seeding (20 students, 5 teachers, 5 classes, 20 grades, notifications), and all 8 containers start automatically.
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        Docker Network                               │
-│                     (school-network)                                 │
-│                                                                      │
-│  ┌─────────────────────────┐       ┌─────────────────────────┐     │
-│  │      students-mvc       │       │       grades-mvc        │     │
-│  │  (ASP.NET Core 10 MVC)  │       │  (ASP.NET Core 10 MVC)  │     │
-│  │                         │       │                         │     │
-│  │  ┌───────────────────┐  │       │  ┌───────────────────┐  │     │
-│  │  │   StudentsDB      │  │       │  │   GradesDB        │  │     │
-│  │  │   (PostgreSQL)    │  │       │  │   (PostgreSQL)    │  │     │
-│  │  └───────────────────┘  │       │  └───────────────────┘  │     │
-│  │                         │       │                         │     │
-│  │  Port: 8080 (container)│       │  Port: 8080 (container)│     │
-│  │  Host: 5001            │       │  Host: 5002            │     │
-│  │                         │       │                         │     │
-│  │  GET /api/students      │◄──────│  StudentsServiceClient  │     │
-│  │  GET /api/students/{id} │       │  (HTTP + Resilience)    │     │
-│  └─────────────────────────┘       └─────────────────────────┘     │
-│                                                                      │
-│  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                    PostgreSQL 16                             │   │
-│  │  ├── students_db  (Identity + Students)                     │   │
-│  │  └── grades_db    (Grades)                                  │   │
-│  └──────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────┘
+                          ┌──────────────────────┐
+                          │     API Gateway       │
+                          │   YARP Reverse Proxy  │
+                          │      Port 8080        │
+                          └──────────┬───────────┘
+                                     │
+                    ┌────────────────┴────────────────┐
+                    │                                 │
+         ┌─────────┴──────────┐          ┌───────────┴──────────┐
+         │    students-mvc    │          │     grades-mvc       │
+         │  ASP.NET Core 10   │  HTTP    │   ASP.NET Core 10    │
+         │  MVC + Identity    │◄────────►│   MVC + Identity     │
+         │                    │          │                      │
+         │  • Students CRUD   │          │  • Grades CRUD       │
+         │  • Teachers CRUD   │          │  • StudentCache      │
+         │  • ClassRooms CRUD │          │  • Resilient Client  │
+         │  • Attendance      │          │                      │
+         │  • Dashboard       │          │                      │
+         │  • Reports         │          │                      │
+         │  • Notifications   │          │                      │
+         │  Port: 5001        │          │  Port: 5002          │
+         └────────┬───────────┘          └───────────┬──────────┘
+                  │                                  │
+                  │        ┌──────────────┐          │
+                  │        │   RabbitMQ   │          │
+                  ├───────►│  Fanout Bus  │◄─────────┤
+                  │        │  Events Bus  │          │
+                  │        └──────────────┘          │
+                  │                                  │
+         ┌────────┴──────────────────────────────────┴──────────┐
+         │                  Shared PostgreSQL 16                 │
+         │  ┌─────────────┐ ┌────────────┐ ┌────────────────┐  │
+         │  │ Identity     │ │ Students   │ │ Teachers       │  │
+         │  │ Tables       │ │            │ │ ClassRooms     │  │
+         │  │ Notifications│ │ Attendance │ │ StudentClasses │  │
+         │  │ Grades       │ │ StudentCache│ │ ClassTeachers  │  │
+         │  └─────────────┘ └────────────┘ └────────────────┘  │
+         └──────────────────────────────────────────────────────┘
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │                   Observability Stack                        │
+  │  ┌──────────┐   ┌────────────┐   ┌──────────────┐          │
+  │  │   Seq    │   │ Prometheus │   │   Grafana     │          │
+  │  │ :5341    │   │  :9090     │   │   :3000       │          │
+  │  └──────────┘   └────────────┘   └──────────────┘          │
+  └─────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Design Decisions
 
-- **Database Isolation**: Each service owns its database. No shared schemas.
-- **HTTP Communication**: Grades service calls Students service via REST API
-- **Resilient Fallback**: If Students service is down, Grades shows student IDs instead of names
-- **Health Checks**: Both services expose `/health` endpoints for monitoring
-- **EF Core Migrations**: Proper migration-based schema management
+- **Single Shared Database** (`defaultdb`): Both services share one PostgreSQL instance with EF Core migrations managed by students-mvc
+- **RabbitMQ Fanout Exchange** (`school.student.events`): Students-mvc publishes student events; grades-mvc consumes and maintains a local `StudentCache` table as a fallback
+- **YARP API Gateway**: Microsoft reverse proxy with active health checks and RoundRobin load balancing
+- **Role-Based Access Control**: 4 roles (Admin, Teacher, Student, Parent) with different permissions on each page
+- **Resilient HTTP Client**: `StudentsServiceClient` in grades-mvc falls back to `StudentCache` table on HTTP failure
 
 ---
 
@@ -85,58 +110,124 @@ docker compose up --build
 | Layer | Technology |
 |-------|------------|
 | **Backend** | ASP.NET Core 10 (MVC) — C# |
-| **Frontend** | Razor Views + Bootstrap 5.3 + Bootstrap Icons |
-| **Database** | PostgreSQL 16 (isolated per service) |
+| **Frontend** | Razor Views + Bootstrap 5.3 + Bootstrap Icons + Chart.js |
+| **Database** | PostgreSQL 16 (shared `defaultdb` on Aiven) |
 | **ORM** | Entity Framework Core 10 + Code-First Migrations |
+| **Messaging** | RabbitMQ 3 (fanout exchange for student events) |
+| **API Gateway** | YARP 2.2.0 (reverse proxy + health checks) |
+| **Authentication** | ASP.NET Core Identity (shared cookie) |
+| **Logging** | Serilog + Seq (centralized structured logs) |
+| **Monitoring** | Prometheus + Grafana (metrics dashboards) |
 | **Container** | Docker + Docker Compose |
-| **Network** | Custom Docker bridge network (`school-network`) |
-| **CI/CD** | GitHub Actions |
+| **CI/CD** | GitHub Actions (build + test + Docker Hub push) |
+| **Testing** | xUnit + Moq + EF Core InMemory (111 tests) |
 
 ---
 
 ## Features
 
-### Resiliency & Fallback UI
-If the students service goes down, the grades service **does not crash**. The `StudentsServiceClient` wraps HTTP calls with try/catch blocks. When the service is unavailable, grades pages gracefully display **student IDs** instead of names.
+### Authentication & Authorization
 
-### Multi-Environment Setup
-- **Local development**: Services communicate via `localhost:5001`
-- **Inside Docker**: Services communicate via container name `students-mvc:8080`
-- **Production**: Environment variables configure all connection strings
+- **ASP.NET Core Identity** with shared auth cookie (`SchoolPortal.Auth`)
+- **4 Roles**: Admin (full CRUD), Teacher (view+edit), Student (view only), Parent (view only)
+- Role-based UI badges (red/blue/green/yellow) in the navbar
+- Conditional action buttons per role
+- **Default Accounts**:
+  | Role | Email | Password |
+  |------|-------|----------|
+  | Admin | `admin@school.com` | `Admin@123` |
+  | Teacher | `teacher@school.com` | `Teacher@123` |
 
-### Layer Caching Optimization
-Dockerfiles use **multi-stage builds**:
-1. **Restore layer** — NuGet packages cached separately
-2. **Publish layer** — Only source code rebuilt on changes
+### Students & Teachers Management
 
-### Data Seeding via EF Core HasData()
-20 students and 20 grades seeded directly in `OnModelCreating()` using `HasData()`. Data is part of the migration history — no runtime seed scripts.
+- Full CRUD operations for Students, Teachers, and ClassRooms
+- Server-side search and pagination on all Index pages
+- Many-to-many relationships: ClassTeacher, StudentClass
+- Form validation with server-side and client-side rules
 
-### Data Isolation
-Each microservice has its **own PostgreSQL database**:
-- `students_db`: Identity tables + Students table
-- `grades_db`: Grades table only
+### Attendance Tracking
 
-### Health Checks
-Both services expose `/health` endpoints that verify database connectivity.
+- Bulk attendance submission by class and date
+- Status options: Present, Absent, Late, Excused
+- Filter by class, date, and search by student name
+- Color-coded status badges (green/red/orange/blue)
+- Auto-notifications for absences, late arrivals, and all-present
+
+### Notifications System
+
+- Bell icon in navbar with unread badge (animated pulse)
+- Full notifications page with search, pagination, mark read, delete
+- Auto-generated notifications for:
+  - Student create/update/delete
+  - Teacher create/update/delete
+  - Attendance submissions (absences, late, all-present)
+- 5 seed notifications on first startup
+- Notification types: Info, Success, Warning, Error
+- Categories: System, Student, Teacher, Attendance, Grade, Class
+
+### Dashboard & Reports
+
+- **Dashboard**: Stats cards, attendance ring chart (SVG), class statistics with progress bars, teacher workload table, monthly attendance bar chart (Chart.js)
+- **Reports**:
+  - Student Performance (individual student attendance breakdown)
+  - Attendance Report (date range + class filter with daily breakdown)
+  - Class Report (per-class stats with student lists)
+
+### RabbitMQ Fault Tolerance
+
+- **Publisher**: `RabbitMqStudentMessageBus` publishes `student.created`, `student.updated`, `student.deleted` events to fanout exchange `school.student.events`
+- **Consumer**: `StudentEventConsumer` background service in grades-mvc consumes events and updates local `StudentCache` table
+- **Fallback**: When students-mvc is unreachable, `StudentsServiceClient` falls back to `StudentCache` data instead of crashing
+
+### API Gateway (YARP)
+
+| Route | Upstream | Load Balancing |
+|-------|----------|---------------|
+| `/api/students/*` | students-mvc:8080 | RoundRobin |
+| `/api/teachers/*` | students-mvc:8080 | RoundRobin |
+| `/Teachers/*` | students-mvc:8080 | RoundRobin |
+| `/ClassRooms/*` | students-mvc:8080 | RoundRobin |
+| `/Attendance/*` | students-mvc:8080 | RoundRobin |
+| `/grades/*` | grades-mvc:8080 | RoundRobin |
+| `/grades-api/*` | grades-mvc:8080 | RoundRobin |
+
+Active health checks every 15 seconds with automatic failover.
+
+### Observability
+
+- **Serilog**: Structured logging with `Service` property enrichment in all 3 services
+- **Seq**: Centralized log aggregation at `http://localhost:5341` (username: `admin`, password: `Admin@123`)
+- **Prometheus**: Scraping metrics from all services at `http://localhost:9090`
+- **Grafana**: Pre-configured dashboards at `http://localhost:3000` (admin/admin)
+
+### Testing
+
+- **111 unit tests**, all passing
+- **students-mvc.Tests** (83 tests):
+  - Models: Student, Teacher, ClassRoom, Attendance, PaginatedList, Notification
+  - Controllers: StudentsController, TeachersController, AttendanceController
+  - ViewComponents, Services
+- **grades-mvc.Tests** (28 tests):
+  - Models: Grade, StudentCache, Notification
+  - Controllers: GradesController
+  - Services: StudentsServiceClient (with MockHttpMessageHandler + cache fallback)
 
 ---
 
-## API Endpoints
+## Docker Services (8 Containers)
 
-### Students Service (Port 5001)
+| Service | Image | Port | Health Check |
+|---------|-------|------|-------------|
+| PostgreSQL | `postgres:16-alpine` | 5432 | `pg_isready` |
+| RabbitMQ | `rabbitmq:3-management-alpine` | 5672, 15672 | `rabbitmq-diagnostics ping` |
+| Seq | `datalust/seq:latest` | 5341 | — |
+| Prometheus | `prom/prometheus:latest` | 9090 | — |
+| Grafana | `grafana/grafana:latest` | 3000 | — |
+| students-mvc | `school-portal-students-mvc:latest` | 5001 | `curl /health` |
+| grades-mvc | `school-portal-grades-mvc:latest` | 5002 | `curl /health` |
+| API Gateway | `school-portal-api-gateway:latest` | 8080 | `curl /health` |
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/students` | Admin, Teacher | Get all students |
-| GET | `/api/students/{id}` | — | Get student by ID |
-| GET | `/health` | — | Health check |
-
-### Grades Service (Port 5002)
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/health` | — | Health check |
+All services use Docker health checks with `depends_on: condition: service_healthy` for proper startup ordering.
 
 ---
 
@@ -144,29 +235,83 @@ Both services expose `/health` endpoints that verify database connectivity.
 
 ```
 School-Portal/
-├── students-mvc/              # Students microservice
-│   ├── Controllers/           # StudentsController, AccountController, HomeController
-│   ├── Data/                  # ApplicationDbContext + Migrations/
-│   ├── Models/                # Student, ApplicationUser, ViewModels
-│   ├── Views/                 # Razor views
-│   ├── Dockerfile
-│   └── railway.json           # Railway deployment config
-├── grades-mvc/                # Grades microservice
-│   ├── Controllers/           # GradesController, HomeController
-│   ├── Data/                  # GradesDbContext + Migrations/
-│   ├── Models/                # Grade, Student (read-only mirror)
-│   ├── Services/              # StudentsServiceClient (HTTP client)
-│   ├── ViewModels/            # GradeFormViewModel, GradeViewModel
-│   ├── Views/                 # Razor views
-│   ├── Dockerfile
-│   └── railway.json           # Railway deployment config
-├── postgres/
-│   └── init/                  # Database initialization scripts
-├── .github/workflows/         # CI/CD pipeline
-├── docker-compose.yml         # Full orchestration
-├── render.yaml                # Render.com deployment
-├── DEPLOYMENT.md              # Deployment guide
-├── .env.example               # Environment template
+├── SchoolPortal.slnx                    # Solution file (all 5 projects)
+├── docker-compose.yml                   # Full orchestration (8 services)
+├── .env                                 # Environment variables
+├── .env.example                         # Environment template
+├── prometheus.yml                       # Prometheus scrape config
+├── api-gateway/                         # YARP Reverse Proxy
+│   ├── Program.cs
+│   └── Dockerfile
+├── students-mvc/                        # Main MVC Application
+│   ├── Controllers/
+│   │   ├── StudentsController.cs        # CRUD + Search + Pagination
+│   │   ├── TeachersController.cs        # CRUD + Search + Pagination
+│   │   ├── ClassRoomsController.cs      # CRUD + Search + Pagination
+│   │   ├── AttendanceController.cs      # Filter, TakeAttendance, Notifications
+│   │   ├── DashboardController.cs       # Stats, Charts, Analytics
+│   │   ├── ReportsController.cs         # Performance, Attendance, Class Reports
+│   │   ├── NotificationsController.cs   # MVC Page + JSON API
+│   │   ├── AccountController.cs         # Identity Login/Register
+│   │   └── HomeController.cs
+│   ├── Data/
+│   │   └── ApplicationDbContext.cs      # EF Core context (all student tables)
+│   ├── Migrations/
+│   ├── Messaging/
+│   │   ├── RabbitMqConfig.cs
+│   │   ├── RabbitMqStudentMessageBus.cs # Publisher (fanout exchange)
+│   │   └── StudentEvent.cs
+│   ├── Models/
+│   │   ├── Student.cs, Teacher.cs, ClassRoom.cs
+│   │   ├── ClassTeacher.cs, StudentClass.cs
+│   │   ├── Attendance.cs
+│   │   ├── Notification.cs
+│   │   ├── PaginatedList.cs             # Generic paginated list
+│   │   └── RegisterViewModel.cs
+│   ├── Services/
+│   │   ├── INotificationService.cs
+│   │   └── NotificationService.cs
+│   ├── ViewComponents/
+│   │   └── PaginationViewComponent.cs
+│   ├── Views/
+│   │   ├── Shared/
+│   │   │   ├── _Layout.cshtml
+│   │   │   ├── _NotificationBell.cshtml  # Bell dropdown partial
+│   │   │   └── Components/Pagination/
+│   │   ├── Students/, Teachers/, ClassRooms/
+│   │   ├── Attendance/
+│   │   ├── Dashboard/
+│   │   ├── Reports/
+│   │   └── Notifications/
+│   ├── wwwroot/css/site.css
+│   └── Dockerfile
+├── grades-mvc/                          # Grades Microservice
+│   ├── Controllers/
+│   │   └── GradesController.cs          # CRUD + Search + Pagination
+│   ├── Data/
+│   │   └── GradesDbContext.cs           # Grades + StudentCache tables
+│   ├── Messaging/
+│   │   └── StudentEventConsumer.cs      # RabbitMQ Consumer
+│   ├── Models/
+│   │   ├── Grade.cs
+│   │   └── StudentCache.cs              # Local student data replica
+│   ├── Services/
+│   │   ├── IStudentsServiceClient.cs
+│   │   └── StudentsServiceClient.cs     # HTTP client with cache fallback
+│   └── Dockerfile
+├── students-mvc.Tests/                  # 83 unit tests
+│   ├── TestDbHelper.cs
+│   ├── Controllers/                     # Students, Teachers, Attendance
+│   ├── Models/                          # Student, Teacher, ClassRoom, etc.
+│   └── Services/
+├── grades-mvc.Tests/                    # 28 unit tests
+│   ├── GradesTestDbHelper.cs
+│   ├── Controllers/GradesControllerTests.cs
+│   ├── Models/
+│   └── Services/StudentsServiceClientTests.cs
+├── .github/workflows/ci-cd.yml         # GitHub Actions CI/CD
+├── DEPLOYMENT.md                        # Free deployment guide
+├── LICENSE                              # MIT License
 └── README.md
 ```
 
@@ -174,16 +319,12 @@ School-Portal/
 
 ## Free Deployment
 
-Deploy this project for free on multiple platforms:
-
 | Platform | Free Tier | Guide |
 |----------|-----------|-------|
-| **Aiven + SnapDeploy** | PostgreSQL 1GB + 4 Containers | [DEPLOYMENT.md](DEPLOYMENT.md#option-1-aiven--snapdeploy-recommended) |
-| **Aiven + JustRunMy.App** | PostgreSQL 1GB + Docker | [DEPLOYMENT.md](DEPLOYMENT.md#option-2-aiven--justrunmyapp) |
-| **Fly.io** | 3 VMs + 3GB storage | [DEPLOYMENT.md](DEPLOYMENT.md#option-3-flyio-no-credit-card) |
-| **Koyeb** | 1 free nano service | [DEPLOYMENT.md](DEPLOYMENT.md#option-4-koyeb-no-credit-card) |
-
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+| **Aiven + SnapDeploy** | PostgreSQL 1GB + 4 Containers | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| **Aiven + JustRunMy.App** | PostgreSQL 1GB + Docker | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| **Fly.io** | 3 VMs + 3GB storage | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| **Koyeb** | 1 free nano service | [DEPLOYMENT.md](DEPLOYMENT.md) |
 
 ---
 
@@ -194,35 +335,48 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 | `POSTGRES_USER` | PostgreSQL username | `postgres` |
 | `POSTGRES_PASSWORD` | PostgreSQL password | `YourStrongPassword123` |
 | `ADMIN_PASSWORD` | Admin user password | `Admin@123` |
-| `StudentsService__BaseUrl` | Students service URL | `http://students-mvc:8080` |
-
----
-
-## Default Credentials
-
-- **Admin Email**: `admin@school.com`
-- **Admin Password**: `Admin@123` (change via `ADMIN_PASSWORD` env var)
+| `RABBITMQ_USER` | RabbitMQ username | `guest` |
+| `RABBITMQ_PASS` | RabbitMQ password | `guest` |
+| `StudentsService__BaseUrl` | Students service URL (Docker) | `http://students-mvc:8080` |
+| `Serilog__SeqServer` | Seq logging server | `http://seq:5341` |
 
 ---
 
 ## Development
 
 ### Prerequisites
+
 - Docker Desktop
-- .NET 10 SDK (for local development)
+- .NET 10 SDK (for local development and running tests)
 
-### Run Locally Without Docker
+### Run Tests
+
 ```bash
-# Start PostgreSQL (via Docker or local install)
-docker run -d --name postgres -e POSTGRES_PASSWORD=YourStrongPassword123 -p 5432:5432 postgres:16-alpine
+# Run all 111 tests
+dotnet test SchoolPortal.slnx
+```
 
-# Run students-mvc
-cd students-mvc
-dotnet run
+### Build Docker Images
 
-# Run grades-mvc (in another terminal)
-cd grades-mvc
-dotnet run
+```bash
+# Build and start all 8 containers
+docker compose up --build
+
+# Check container health
+docker compose ps
+```
+
+### Git History
+
+```
+6417cc8  fix: DateTime.UtcNow, IPaginatedList, duplicate Scripts section
+d1e2d12  feat: Notifications system (bell, page, auto-events, seed data)
+bcc387c  feat: Unit tests (111 tests) + CI/CD pipeline
+0fe763f  feat: Search + Pagination on all controllers
+c54e348  feat: Logging (Serilog + Seq + Prometheus + Grafana)
+b2536ff  feat: Dashboard + Reports (Chart.js, SVG charts)
+22bb2de  feat: API Gateway (YARP) + Docker health checks
+0d01871  feat: RabbitMQ fault tolerance + StudentCache fallback
 ```
 
 ---
