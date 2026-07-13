@@ -7,7 +7,7 @@
 
 A modern school management system built on a **microservices architecture** with two fully isolated ASP.NET Core MVC services, each backed by its own PostgreSQL database ensuring complete **data autonomy and fault isolation**.
 
-**Deploy for free** on Render, Fly.io, or Koyeb in minutes.
+**Deploy for free** on Aiven + SnapDeploy, Fly.io, or Koyeb in minutes.
 
 ---
 
@@ -178,9 +178,10 @@ Deploy this project for free on multiple platforms:
 
 | Platform | Free Tier | Guide |
 |----------|-----------|-------|
-| **Render** | 750 hrs/month | [DEPLOYMENT.md](DEPLOYMENT.md#option-1-rendercom-recommended) |
-| **Fly.io** | 3 VMs + 3GB storage | [DEPLOYMENT.md](DEPLOYMENT.md#option-2-flyio) |
-| **Koyeb** | 1 free nano service | [DEPLOYMENT.md](DEPLOYMENT.md#option-3-koyeb) |
+| **Aiven + SnapDeploy** | PostgreSQL 1GB + 4 Containers | [DEPLOYMENT.md](DEPLOYMENT.md#option-1-aiven--snapdeploy-recommended) |
+| **Aiven + JustRunMy.App** | PostgreSQL 1GB + Docker | [DEPLOYMENT.md](DEPLOYMENT.md#option-2-aiven--justrunmyapp) |
+| **Fly.io** | 3 VMs + 3GB storage | [DEPLOYMENT.md](DEPLOYMENT.md#option-3-flyio-no-credit-card) |
+| **Koyeb** | 1 free nano service | [DEPLOYMENT.md](DEPLOYMENT.md#option-4-koyeb-no-credit-card) |
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 
